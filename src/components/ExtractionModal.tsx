@@ -5,7 +5,7 @@ interface ExtractionModalProps {
     isOpen: boolean;
     onClose: () => void;
     path: string[];
-    values: { value: string }[];
+    values: Record<string, string>[];
 }
 
 export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionModalProps) {
@@ -13,8 +13,18 @@ export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionMod
 
     if (!isOpen) return null;
 
+    // Determine all unique keys (columns) from data
+    const keys = Array.from(new Set(values.flatMap(v => Object.keys(v))));
+    const headers = keys.length > 0 ? keys : ['Value'];
+
     const handleCopy = () => {
-        const text = values.map(v => v.value).join('\n');
+        // Generate TSV (Tab Separated Values) for Excel
+        const headerRow = headers.join('\t');
+        const dataRows = values.map(v => {
+            return headers.map(header => v[header] || '').join('\t');
+        }).join('\n');
+
+        const text = `${headerRow}\n${dataRows}`;
         navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -22,7 +32,7 @@ export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionMod
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={onClose}>
-            <div className="bg-[#1e293b] border border-[var(--border-color)] rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="bg-[#1e293b] border border-[var(--border-color)] rounded-lg shadow-2xl w-full max-w-4xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
                 {/* Header */}
                 <div className="flex justify-between items-center p-4 border-b border-[var(--border-color)]">
                     <div>
@@ -37,7 +47,7 @@ export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionMod
                             className="flex items-center gap-2 px-3 py-1.5 rounded bg-[var(--surface-hover)] text-xs hover:text-[var(--accent-color)] transition-colors"
                         >
                             <Copy className="w-3 h-3" />
-                            {copied ? 'Copied!' : 'Copy All'}
+                            {copied ? 'Copied!' : 'Copy to Excel'}
                         </button>
                         <button onClick={onClose} className="p-1 hover:text-white text-gray-400">
                             <X className="w-5 h-5" />
@@ -52,18 +62,26 @@ export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionMod
                             No values found for this element.
                         </div>
                     ) : (
-                        <table className="w-full text-sm text-left">
-                            <thead className="text-xs text-[var(--text-secondary)] bg-[var(--bg-color)] sticky top-0">
+                        <table className="w-full text-sm text-left border-collapse">
+                            <thead className="text-xs text-[var(--text-secondary)] bg-[var(--bg-color)] sticky top-0 z-10">
                                 <tr>
-                                    <th className="px-4 py-3 font-medium border-b border-[var(--border-color)] w-16 text-center">#</th>
-                                    <th className="px-4 py-3 font-medium border-b border-[var(--border-color)]">Value</th>
+                                    <th className="px-4 py-3 font-medium border-b border-[var(--border-color)] w-16 text-center bg-[var(--bg-color)]">#</th>
+                                    {headers.map(header => (
+                                        <th key={header} className="px-4 py-3 font-medium border-b border-[var(--border-color)] bg-[var(--bg-color)] whitespace-nowrap">
+                                            {header}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[var(--border-color)]">
                                 {values.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-[var(--surface-color)] group">
                                         <td className="px-4 py-2 text-center text-[var(--text-secondary)] font-mono text-xs select-none">{idx + 1}</td>
-                                        <td className="px-4 py-2 font-mono text-[var(--text-primary)] break-all">{item.value}</td>
+                                        {headers.map(header => (
+                                            <td key={header} className="px-4 py-2 font-mono text-[var(--text-primary)] whitespace-nowrap text-xs">
+                                                {item[header] || '-'}
+                                            </td>
+                                        ))}
                                     </tr>
                                 ))}
                             </tbody>
@@ -73,7 +91,7 @@ export function ExtractionModal({ isOpen, onClose, path, values }: ExtractionMod
 
                 {/* Footer */}
                 <div className="p-3 border-t border-[var(--border-color)] text-xs text-[var(--text-secondary)] flex justify-between">
-                    <span>{values.length} result{values.length !== 1 ? 's' : ''} found</span>
+                    <span>{values.length} row{values.length !== 1 ? 's' : ''} found</span>
                 </div>
             </div>
         </div>

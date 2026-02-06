@@ -20,7 +20,7 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
 
     // Extraction Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [extractionData, setExtractionData] = useState<{ path: string[], values: { value: string }[] }>({ path: [], values: [] });
+    const [extractionData, setExtractionData] = useState<{ path: string[], values: Record<string, string>[] }>({ path: [], values: [] });
 
     // Handle Right Click
     const handleContextMenu = (e: React.MouseEvent) => {
