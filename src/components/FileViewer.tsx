@@ -1,5 +1,8 @@
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { getPathAtIndex } from '../utils/xmlPathFinder';
+import { extractValuesByPath } from '../utils/xmlExtractor';
+import { ContextMenu } from './ContextMenu';
+import { ExtractionModal } from './ExtractionModal';
 
 interface FileViewerProps {
     content: string | null;
@@ -10,6 +13,43 @@ interface FileViewerProps {
 
 export function FileViewer({ content, fileName, highlightIndex, matchLength }: FileViewerProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // Context Menu State
+    const [menuPos, setMenuPos] = useState<{ x: number, y: number } | null>(null);
+    const [targetPath, setTargetPath] = useState<string[] | null>(null);
+
+    // Extraction Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [extractionData, setExtractionData] = useState<{ path: string[], values: { value: string }[] }>({ path: [], values: [] });
+
+    // Handle Right Click
+    const handleContextMenu = (e: React.MouseEvent) => {
+        if (!content) return;
+
+        const textarea = textareaRef.current;
+        if (textarea) {
+            // Get cursor index from the click position
+            // Note: selectionStart matches the click position usually for right click if not selecting range
+            const index = textarea.selectionStart;
+
+            // Find logic path
+            const path = getPathAtIndex(content, index);
+
+            if (path) {
+                e.preventDefault();
+                setTargetPath(path);
+                setMenuPos({ x: e.clientX, y: e.clientY });
+            }
+        }
+    };
+
+    const handleExtract = () => {
+        if (content && targetPath) {
+            const values = extractValuesByPath(content, targetPath);
+            setExtractionData({ path: targetPath, values });
+            setIsModalOpen(true);
+        }
+    };
 
     useEffect(() => {
         if (highlightIndex !== undefined && highlightIndex !== null && textareaRef.current && matchLength) {
@@ -83,6 +123,7 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
                         ref={textareaRef}
                         readOnly
                         value={content}
+                        onContextMenu={handleContextMenu}
                         className="w-full h-full resize-none bg-[var(--bg-color)] text-[var(--text-primary)] font-mono text-sm p-4 focus:outline-none border-none block"
                         spellCheck={false}
                     />
@@ -92,6 +133,23 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
                     </div>
                 )}
             </div>
+
+            {/* Popups */}
+            {menuPos && (
+                <ContextMenu
+                    x={menuPos.x}
+                    y={menuPos.y}
+                    onClose={() => setMenuPos(null)}
+                    onExtract={handleExtract}
+                />
+            )}
+
+            <ExtractionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                path={extractionData.path}
+                values={extractionData.values}
+            />
         </div>
     );
 }
