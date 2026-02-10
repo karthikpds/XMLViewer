@@ -5,11 +5,28 @@
 export function extractValuesByPath(xml: string, path: string[]) {
     try {
         const parser = new DOMParser();
-        const doc = parser.parseFromString(xml, "text/xml");
+        let doc = parser.parseFromString(xml, "text/xml");
 
+        // Check for parse error and retry with wrapper if needed (handles multi-root/fragments)
         if (doc.querySelector('parsererror')) {
-            console.error("XML Parse Error");
-            return [];
+            console.warn("Initial parse failed. Retrying with wrapper and sanitization.");
+
+            // 1. Strip XML declaration
+            let cleanXml = xml.replace(/<\?xml.*?\?>/g, '');
+
+            // 2. Escape unescaped ampersands (common cause of "xmlParseEntityRef: no name")
+            // Matches '&' that is NOT followed by a valid entity (amp, lt, gt, quot, apos, or decimal/hex char ref)
+            cleanXml = cleanXml.replace(/&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[a-f\d]+);)/gi, '&amp;');
+
+            doc = parser.parseFromString(`<__XML_Fragment_Root__>${cleanXml}</__XML_Fragment_Root__>`, "text/xml");
+
+            if (doc.querySelector('parsererror')) {
+                console.error("XML Parse Error (even with wrapper)");
+                // Log the parser error text for debugging
+                const err = doc.querySelector('parsererror')?.textContent;
+                console.error("Parser Error Details:", err);
+                return [];
+            }
         }
 
         const results: Record<string, string>[] = [];
@@ -21,7 +38,7 @@ export function extractValuesByPath(xml: string, path: string[]) {
         while (currentNode) {
             const el = currentNode as Element;
 
-            if (el.tagName === targetTag) {
+            if (checkTagMatch(el.tagName, targetTag)) {
                 // Verify Hierarchy
                 // Walk up parents to see if they match the path stack (reversed)
                 let parent = el.parentElement;
@@ -29,7 +46,15 @@ export function extractValuesByPath(xml: string, path: string[]) {
                 let matchesPath = true;
 
                 while (pathIdx >= 0 && parent) {
-                    if (parent.tagName !== path[pathIdx]) {
+                    // Skip wrapper root if present
+                    if (parent.tagName === '__XML_Fragment_Root__') {
+                        parent = parent.parentElement;
+                        continue;
+                    }
+
+                    if (!checkTagMatch(parent.tagName, path[pathIdx])) {
+                        // Console warning temporarily removed to reduce noise once fixed, 
+                        // but logic is now robust.
                         matchesPath = false;
                         break;
                     }
@@ -104,4 +129,18 @@ export function extractValuesByPath(xml: string, path: string[]) {
         console.error("Extraction Failed", e);
         return [];
     }
+}
+
+/**
+ * Helper to check if tags match loosely (case-insensitive, ignoring namespace prefix)
+ */
+function checkTagMatch(domTag: string, pathTag: string): boolean {
+    if (domTag === pathTag) return true;
+    if (domTag.toLowerCase() === pathTag.toLowerCase()) return true;
+
+    // Check local name (strip namespace)
+    const domLocal = domTag.includes(':') ? domTag.split(':')[1] : domTag;
+    const pathLocal = pathTag.includes(':') ? pathTag.split(':')[1] : pathTag;
+
+    return domLocal === pathLocal || domLocal.toLowerCase() === pathLocal.toLowerCase();
 }

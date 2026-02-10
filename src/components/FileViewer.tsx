@@ -32,8 +32,11 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
             // Note: selectionStart matches the click position usually for right click if not selecting range
             const index = textarea.selectionStart;
 
+            // Normalize content to match textarea's behavior (LF only) to prevent index drift
+            const normalizedContent = content.replace(/\r\n/g, '\n');
+
             // Find logic path
-            const path = getPathAtIndex(content, index);
+            const path = getPathAtIndex(normalizedContent, index);
 
             if (path) {
                 e.preventDefault();

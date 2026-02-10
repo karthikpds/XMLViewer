@@ -1,0 +1,1396 @@
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <taxCalculationResponse xmlns="http://www.sabrix.com/services/taxcalculationservice/2020-03-01">
+      <OUTDATA version="G">
+        <REQUEST_STATUS>
+          <IS_SUCCESS>true</IS_SUCCESS>
+          <IS_PARTIAL_SUCCESS>true</IS_PARTIAL_SUCCESS></REQUEST_STATUS>
+        <INVOICE>
+          <REQUEST_STATUS>
+            <IS_SUCCESS>true</IS_SUCCESS>
+            <IS_PARTIAL_SUCCESS>false</IS_PARTIAL_SUCCESS></REQUEST_STATUS>
+          <CALCULATION_DIRECTION>F</CALCULATION_DIRECTION>
+          <CALLING_SYSTEM_NUMBER>200</CALLING_SYSTEM_NUMBER>
+          <COMPANY_ID>22352</COMPANY_ID>
+          <COMPANY_NAME>Warrior Coal, LLC</COMPANY_NAME>
+          <CURRENCY_CODE>USD</CURRENCY_CODE>
+          <CURRENCY_NAME>United States Dollar</CURRENCY_NAME>
+          <MIN_ACCOUNTABLE_UNIT>0.01</MIN_ACCOUNTABLE_UNIT>
+          <ROUNDING_PRECISION>2</ROUNDING_PRECISION>
+          <ROUNDING_RULE>1</ROUNDING_RULE>
+          <EXTERNAL_COMPANY_ID>1005971912-165</EXTERNAL_COMPANY_ID>
+          <FISCAL_DATE>2025-10-17</FISCAL_DATE>
+          <HOST_SYSTEM>5c375ba3-08f7-4c17-ba31-3efe268668de</HOST_SYSTEM>
+          <INVOICE_DATE>2025-10-23</INVOICE_DATE>
+          <INVOICE_NUMBER>9164852101</INVOICE_NUMBER>
+          <IS_CREDIT>false</IS_CREDIT>
+          <MESSAGE>
+            <LOCATION>InvoicePreparer.performProductCrossReferenceGroupLookups</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>USING_COMPANY_ACTIVE_MAPPING_GROUP</CODE>
+            <MESSAGE_TEXT>Using company's active product mapping group.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>invoice.checkB2B</LOCATION>
+            <CATEGORY>CALCULATION</CATEGORY>
+            <CODE>B2B_DISABLED_LINE_CUSTOMER_OR_VENDOR</CODE>
+            <MESSAGE_TEXT>There is either a line-level customer or vendor. This disables B2B processing.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>TaxController.calculateInvoice</LOCATION>
+            <CATEGORY>CALCULATION</CATEGORY>
+            <CODE>TAX_RESULT_IS_ROUNDED</CODE>
+            <MESSAGE_TEXT>Output XML tax results are rounded. Rule [Round] Precision [2] MAU [0.01]</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>InvoicePreparer.performVctGroupLookups</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>USING_COMPANY_ACTIVE_VCT_GROUP</CODE>
+            <MESSAGE_TEXT>VCT - Using company's active vendor charge tax group.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctTaxController.isDocumentTypeMatched</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>DOCUMENT_TYPE_MATCH</CODE>
+            <MESSAGE_TEXT>VCT - The configured vendor charge tax document type matched with doc type provided - STANDARD INVOICES</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctValidator.isTrustedVendor()</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>NOT_A_TRUSTED_VENDOR</CODE>
+            <MESSAGE_TEXT>VCT - Verification does not meet the criteria to be a Trusted Vendor.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctValidator.doAllInvoiceLinesHaveDpp</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>DPP_CHECK_INITIATED</CODE>
+            <MESSAGE_TEXT>VCT - Direct Pay Permit process was initiated.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctValidator.doAllInvoiceLinesHaveDpp</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>TRANSACTING_STATE_FOR_DPP</CODE>
+            <MESSAGE_TEXT>VCT – Direct Pay Permit is considered for line 1 is KY.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctValidator.doAllInvoiceLinesHaveDpp</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>NO_DPP_STATE_CONFIGURED</CODE>
+            <MESSAGE_TEXT>VCT - Direct Pay Permit not applied for the state KY.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctValidator.doAllInvoiceLinesHaveDpp</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>THIS_IS_NOT_A_DPP_INVOICE</CODE>
+            <MESSAGE_TEXT>VCT - This invoice is not a Direct Pay Permit invoice.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>VctTaxController.performVctChecks</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>CONSUMER_USE_TAX_OVERRIDE_NOT_SET</CODE>
+            <MESSAGE_TEXT>VCT - Seller-use-tax-rate is used in calculating tax as per the user’s configuration.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>TaxController.calculateInvoice</LOCATION>
+            <CATEGORY>CALCULATION</CATEGORY>
+            <CODE>SUCCESSFUL_PROCESSING</CODE>
+            <MESSAGE_TEXT>Successful processing.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>UnderChargeStrategy.processAccrualLogic()</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>VCT_UNDER_CHARGE_TRANSACTION</CODE>
+            <MESSAGE_TEXT>VCT - This is a undercharge Transaction.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>AbstractVctChargingStrategy.isToleranceMatching()</LOCATION>
+            <CATEGORY>INVOICE VALIDATION</CATEGORY>
+            <CODE>TOLERANCE_CHECK_FAILED</CODE>
+            <MESSAGE_TEXT>VCT - One or both of verification tolerance checks failed.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <MESSAGE>
+            <LOCATION>AuditData.save</LOCATION>
+            <CATEGORY>CALCULATION</CATEGORY>
+            <CODE>AUDIT_SUCCESS</CODE>
+            <MESSAGE_TEXT>Audit data saved successfully.</MESSAGE_TEXT>
+            <SEVERITY>0</SEVERITY></MESSAGE>
+          <TOTAL_TAX_AMOUNT>63.50</TOTAL_TAX_AMOUNT>
+          <TRANSACTION_DATE>2025-10-23</TRANSACTION_DATE>
+          <UNIQUE_INVOICE_NUMBER>28003.1005971912-165</UNIQUE_INVOICE_NUMBER>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE8</NAME>
+            <VALUE>SUPPLIER</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE39</NAME>
+            <VALUE>SUPPLIER</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE41</NAME>
+            <VALUE>28003</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE42</NAME>
+            <VALUE>300000005927687</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE43</NAME>
+            <VALUE>300000004349242</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE44</NAME>
+            <VALUE>STANDARD INVOICES</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE45</NAME>
+            <VALUE>300000004352858</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE46</NAME>
+            <VALUE>IMAGE</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE47</NAME>
+            <VALUE>103</VALUE></USER_ELEMENT>
+          <USER_ELEMENT>
+            <NAME>ATTRIBUTE49</NAME>
+            <VALUE>200</VALUE></USER_ELEMENT>
+          <COMPANY_ROLE>B</COMPANY_ROLE>
+          <VCT_CALC_COMPANY_ROLE>S</VCT_CALC_COMPANY_ROLE>
+          <TAX_VARIANCE>7.04</TAX_VARIANCE>
+          <VENDOR_TAX>56.46</VENDOR_TAX>
+          <VENDOR_NAME>AIRGAS USA LLC</VENDOR_NAME>
+          <VENDOR_NUMBER>10098</VENDOR_NUMBER>
+          <THRESHOLD_RESULT>
+            <AMT_WITHIN_TOLERANCE_INDICATOR>true</AMT_WITHIN_TOLERANCE_INDICATOR>
+            <THRESHOLD_AMOUNT>50.00</THRESHOLD_AMOUNT>
+            <THRESHOLD_PERCENT>5</THRESHOLD_PERCENT>
+            <PERCENT_WITHIN_TOLERANCE_INDICATOR>false</PERCENT_WITHIN_TOLERANCE_INDICATOR></THRESHOLD_RESULT>
+          <IS_TRUSTED_VENDOR>false</IS_TRUSTED_VENDOR>
+          <DOCUMENT_TYPE>STANDARD INVOICES</DOCUMENT_TYPE>
+          <IS_DPP_APPLIED>false</IS_DPP_APPLIED>
+          <VCT_STATUS>UC</VCT_STATUS>
+          <ACCRUAL_METHOD>HOLD_PAYMENT</ACCRUAL_METHOD>
+          <VCT_RESPONSE_CODE>09</VCT_RESPONSE_CODE>
+          <VCT_DET_TAX_VARIANCE_AMT>0</VCT_DET_TAX_VARIANCE_AMT>
+          <IS_VCT_APPLIED>true</IS_VCT_APPLIED>
+          <OPERATING_LICENSES>
+            <ASSUME_BUYER_FULLY_LICENSED>N</ASSUME_BUYER_FULLY_LICENSED>
+            <ASSUME_SELLER_FULLY_LICENSED>N</ASSUME_SELLER_FULLY_LICENSED></OPERATING_LICENSES>
+          <LINE ID="1">
+            <GROSS_AMOUNT>1058.26</GROSS_AMOUNT>
+            <LINE_NUMBER>1</LINE_NUMBER>
+            <MESSAGE>
+              <LOCATION>FilterGroup.execute</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>TRANS_EDITOR_GROUP_APPLIED</CODE>
+              <MESSAGE_TEXT>TransEditor Group was applied to Input XML. TransEditorGroupName=DEFAULT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>FilterGroup.execute</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>TRANS_EDITOR_GROUP_APPLIED</CODE>
+              <MESSAGE_TEXT>TransEditor Group was applied to Input XML. TransEditorGroupName=DEFAULT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>FilterGroup.execute</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>TRANS_EDITOR_GROUP_APPLIED</CODE>
+              <MESSAGE_TEXT>TransEditor Group was applied to Input XML. TransEditorGroupName=DEFAULT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>FilterGroup.execute</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>TRANS_EDITOR_GROUP_APPLIED</CODE>
+              <MESSAGE_TEXT>TransEditor Group was applied to Input XML. TransEditorGroupName=DEFAULT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZoneOverrides()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>OVERRIDE_CITY</CODE>
+              <MESSAGE_TEXT>City was overridden during zone tree lookups. Madisonville with MADISONVILLE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZoneOverrides()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>OVERRIDE_COUNTY</CODE>
+              <MESSAGE_TEXT>County was overridden during zone tree lookups. Hopkins with HOPKINS</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.performUsIntlLookups().1</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>PARTIAL_ZONE_TREE_MATCH</CODE>
+              <MESSAGE_TEXT>Partial zone tree match was found. Address: BILL_TO: UNITED STATES, OKLAHOMA, Tulsa, Tulsa, 74119, 4833</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZonesNotUsed()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>ZONE_NOT_USED_GEOCODE</CODE>
+              <MESSAGE_TEXT>The Geocode zone was not used for the zone tree match: BILL_TO: 4833</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZonesNotUsed()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>ZONE_NOT_USED_CITY</CODE>
+              <MESSAGE_TEXT>The City zone was not used for the zone tree match BILL_TO: Tulsa</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZonesNotUsed()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>ZONE_NOT_USED_COUNTY</CODE>
+              <MESSAGE_TEXT>The County zone was not used for the zone tree match: BILL_TO: Tulsa</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZoneOverrides()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>OVERRIDE_CITY</CODE>
+              <MESSAGE_TEXT>City was overridden during zone tree lookups. Tulsa with TULSA</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>ZoneAddressPreparer.checkForZoneOverrides()</LOCATION>
+              <CATEGORY>INVOICE VALIDATION</CATEGORY>
+              <CODE>OVERRIDE_COUNTY</CODE>
+              <MESSAGE_TEXT>County was overridden during zone tree lookups. Tulsa with TULSA</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - UNITED STATES EXPORT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL SUPERFUND EXCISE TAX: EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL OIL SPILL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL OIL SPILL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL LEAKING UNDERGROUND STORAGE TANK (LUST) TRUST FUND TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL LEAKING UNDERGROUND STORAGE TANK (LUST) TRUST FUND TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (OIL AND GAS)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL EXCISE TAX (OIL AND GAS)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PROPANE EDUCATIONAL AND RESEARCH COUNCIL (PERC) FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL PROPANE EDUCATIONAL AND RESEARCH COUNCIL (PERC) FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL COMMUNICATIONS COMMISSION REGULATORY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL COMMUNICATIONS COMMISSION REGULATORY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL UNIVERSAL SERVICE FUND SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL UNIVERSAL SERVICE FUND SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL NUMBERING PLAN SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL NUMBERING PLAN SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELEPHONE EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL TELEPHONE EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE IP</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE IP</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PETROLEUM SUPERFUND EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL PETROLEUM SUPERFUND EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (ALTERNATIVE FUEL)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, ST, BT, SC; Authority: US - FEDERAL EXCISE TAX (ALTERNATIVE FUEL)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL EXCISE TAX (TIRE): EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE RENTAL TAX: State Rental (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE MOTOR VEHICLE SALES/USE TAX: State Sales/Use (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE OIL WELL SERVICE TAX: Business and Occupation (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE DIESEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE DIESEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE GASOLINE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE GASOLINE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE PETROLEUM PRODUCTS DELIVERY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE PETROLEUM PRODUCTS DELIVERY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE CNG AND LNG TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE CNG AND LNG TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - LOCAL REMOTE SELLERS USE TAX: County Sales/Use (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE HOTEL OCCUPANCY TAX: State Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE UNIVERSAL SERVICE FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE UNIVERSAL SERVICE FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE PUBLIC UTILITY ASSESSMENT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE PUBLIC UTILITY ASSESSMENT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE GASOLINE TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE GASOLINE TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE DIESEL TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - STATE DIESEL TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE AUTOMOTIVE OIL SALES FEE: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE (BATTERY) FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE PREPAID WIRELESS E911 FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE COASTAL PROTECTION FEE: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - DALLAS METROPOLITAN TRANSIT AUTHORITY, DISTRICT SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - DALLAS, CITY SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - DALLAS, CITY HOTEL OCCUPANCY TAX: City Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - DALLAS TOURISM PUB. IMP. DISTRICT (100 ROOMS OR MORE), DISTRICT HOTEL OCCUPANCY TAX: City Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - DALLAS MUNICIPAL EMERGENCY COMMUNICATIONS DISTRICT, CITY 911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: SF, SC; Authority: TX - DALLAS MUNICIPAL EMERGENCY COMMUNICATIONS DISTRICT, CITY 911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL SUPERFUND EXCISE TAX: EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL OIL SPILL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL LEAKING UNDERGROUND STORAGE TANK (LUST) TRUST FUND TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (OIL AND GAS)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PROPANE EDUCATIONAL AND RESEARCH COUNCIL (PERC) FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL COMMUNICATIONS COMMISSION REGULATORY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL UNIVERSAL SERVICE FUND SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL NUMBERING PLAN SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELEPHONE EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE IP</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PETROLEUM SUPERFUND EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (ALTERNATIVE FUEL)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL EXCISE TAX (TIRE): EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE (TIRE) FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE RENTAL SALES/USE TAX: State Rental (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>determineApplicableTaxes</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>RULE_NO_TAX</CODE>
+              <MESSAGE_TEXT>This rule is marked as No Tax.  This will result in this tax block being removed from calculation. Authority: KY - STATE MOTOR VEHICLE USAGE TAX ; Rule order: 10000</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE EXCISE TAX: State Excise Tax (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE LIQUEFIED PETROLEUM GAS TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE LIQUEFIED PETROLEUM GAS TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE PETROLEUM ENVIRONMENTAL ASSURANCE FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE PETROLEUM ENVIRONMENTAL ASSURANCE FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE GASOLINE AND SPECIAL FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE GASOLINE AND SPECIAL FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE TRANSIENT ROOM TAX: State Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE GROSS REVENUES TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE GROSS REVENUES TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE UNIVERSAL SERVICE FUND FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE UNIVERSAL SERVICE FUND FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE TELECOM RELAY SERVICE & TELECOM ACCESS PROGRAM FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE TELECOM RELAY SERVICE & TELECOM ACCESS PROGRAM FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: KY - STATE PUBLIC UTILITY COMMISSION FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: ST; Authority: KY - STATE PUBLIC UTILITY COMMISSION FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE ALCOHOL EXCISE TAX: State Excise Tax (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE ELECTRIC FUEL EXCISE TAX: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - STATE PREPAID WIRELESS E911 FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL OILHEAT (NORA) FEE (KENTUCKY): State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - HOPKINS, COUNTY TRANSIENT ROOM TAX: County Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>determineApplicableTaxes</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>RULE_NO_TAX</CODE>
+              <MESSAGE_TEXT>This rule is marked as No Tax.  This will result in this tax block being removed from calculation. Authority: KY - MADISONVILLE, CITY RESTAURANT TAX ; Rule order: 10000</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: KY - MADISONVILLE, CITY REGULATORY LICENSE FEE: City Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL SUPERFUND EXCISE TAX: EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL OIL SPILL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL LEAKING UNDERGROUND STORAGE TANK (LUST) TRUST FUND TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (OIL AND GAS)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PROPANE EDUCATIONAL AND RESEARCH COUNCIL (PERC) FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL COMMUNICATIONS COMMISSION REGULATORY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL UNIVERSAL SERVICE FUND SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL NUMBERING PLAN SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELEPHONE EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE IP</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PETROLEUM SUPERFUND EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (ALTERNATIVE FUEL)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL EXCISE TAX (TIRE): EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - STATE (TIRE) FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - STATE RENTAL TAX: State Rental (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - STATE USED VEHICLE SALES/USE MINIMUM TAX: State Sales/Use (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE STORAGE TANK RELEASE INDEMNITY PROGRAM</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE STORAGE TANK RELEASE INDEMNITY PROGRAM</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE MOTOR FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE MOTOR FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE ADDITIONAL MOTOR FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE ADDITIONAL MOTOR FUEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE TELECOM RELAY SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE TELECOM RELAY SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE UNIVERSAL SERVICE FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE UNIVERSAL SERVICE FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - STATE ELECTRIC FUEL EXCISE TAX: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - STATE PREPAID WIRELESS E911 FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: OK - STATE MOTOR FUEL TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - STATE MOTOR FUEL TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - TULSA, COUNTY SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>NO_JURISDICTION</CODE>
+              <MESSAGE_TEXT>This authority has no jurisdiction to charge tax for this line item / address combination. Address: BT; Authority: OK - TULSA (TULSA CO), CITY SALES/USE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: OK - TULSA, CITY LODGING TAX: City Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL SUPERFUND EXCISE TAX: EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL OIL SPILL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL LEAKING UNDERGROUND STORAGE TANK (LUST) TRUST FUND TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (OIL AND GAS)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PROPANE EDUCATIONAL AND RESEARCH COUNCIL (PERC) FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL COMMUNICATIONS COMMISSION REGULATORY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL UNIVERSAL SERVICE FUND SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL NUMBERING PLAN SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELEPHONE EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL TELECOM RELAY SERVICE SURCHARGE IP</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL PETROLEUM SUPERFUND EXCISE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: US - FEDERAL EXCISE TAX (ALTERNATIVE FUEL)</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: US - FEDERAL EXCISE TAX (TIRE): EXC (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE RENTAL TAX: State Rental (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE MOTOR VEHICLE SALES/USE TAX: State Sales/Use (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE OIL WELL SERVICE TAX: Business and Occupation (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE DIESEL TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE GASOLINE TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE PETROLEUM PRODUCTS DELIVERY FEE</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE CNG AND LNG TAX</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - LOCAL REMOTE SELLERS USE TAX: County Sales/Use (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE HOTEL OCCUPANCY TAX: State Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE UNIVERSAL SERVICE FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE E911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE PUBLIC UTILITY ASSESSMENT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE GASOLINE TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - STATE DIESEL TAX DISCOUNT</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE AUTOMOTIVE OIL SALES FEE: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE (BATTERY) FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE PREPAID WIRELESS E911 FEES: State Fees (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - STATE COASTAL PROTECTION FEE: State MFT (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - DALLAS, CITY HOTEL OCCUPANCY TAX: City Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>TaxFinder.determineApplicableTaxes()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>AUTHORITY_IS_TURNED_OFF</CODE>
+              <MESSAGE_TEXT>This authority has not been treated as taxable in this transaction due to a customization. Authority: TX - DALLAS TOURISM PUB. IMP. DISTRICT (100 ROOMS OR MORE), DISTRICT HOTEL OCCUPANCY TAX: City Occupancy (Sabrix US Tax Data)</MESSAGE_TEXT>
+              <SEVERITY>1</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <CATEGORY>JURISDICTION DETERMINATION</CATEGORY>
+              <CODE>USNT1</CODE>
+              <MESSAGE_TEXT>This authority does not tax this transaction. Authority: TX - DALLAS MUNICIPAL EMERGENCY COMMUNICATIONS DISTRICT, CITY 911 FEES</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <MESSAGE>
+              <LOCATION>UsDefaultTaxRoundingStrategy.round()</LOCATION>
+              <CATEGORY>CALCULATION</CATEGORY>
+              <CODE>APPLIED_US_DEFAULT_ROUNDING</CODE>
+              <MESSAGE_TEXT>The default US tax rounding rules were applied to the tax results in this calculation.</MESSAGE_TEXT>
+              <SEVERITY>0</SEVERITY></MESSAGE>
+            <POINT_OF_TITLE_TRANSFER>I</POINT_OF_TITLE_TRANSFER>
+            <SHIP_FROM_COUNTRY>UNITED STATES</SHIP_FROM_COUNTRY>
+            <SHIP_TO_COUNTRY>UNITED STATES</SHIP_TO_COUNTRY>
+            <UNIQUE_LINE_NUMBER>1</UNIQUE_LINE_NUMBER>
+            <TOTAL_TAX_AMOUNT>63.50</TOTAL_TAX_AMOUNT>
+            <TAX>
+              <ADDRESS_TYPE>ST</ADDRESS_TYPE>
+              <ADMIN_ZONE_LEVEL>State</ADMIN_ZONE_LEVEL>
+              <AUTHORITY_NAME>KY - STATE SALES/USE TAX</AUTHORITY_NAME>
+              <AUTHORITY_TYPE>State Sales/Use</AUTHORITY_TYPE>
+              <CALCULATION_METHOD>1</CALCULATION_METHOD>
+              <COMMENT>ORACLE[USKY]</COMMENT>
+              <ERP_TAX_CODE>USKY</ERP_TAX_CODE>
+              <EFFECTIVE_ZONE_LEVEL>State</EFFECTIVE_ZONE_LEVEL>
+              <INVOICE_DESCRIPTION>Seller's Use Tax</INVOICE_DESCRIPTION>
+              <JURISDICTION_TEXT>USSG5: Standard Seller collected use tax applies because of sale from outside jurisdiction.</JURISDICTION_TEXT>
+              <MESSAGE>
+                <LOCATION>TaxFinder.createTaxResult()</LOCATION>
+                <CATEGORY>CALCULATION</CATEGORY>
+                <CODE>APPLIED_TAX_DETERMINATION_DATE_RULE</CODE>
+                <MESSAGE_TEXT>Applied Tax Determination Date using this rule: DEFAULT TAX DATE LOGIC</MESSAGE_TEXT>
+                <SEVERITY>0</SEVERITY></MESSAGE>
+              <MESSAGE>
+                <LOCATION>TaxFinder.createTaxResult()</LOCATION>
+                <CATEGORY>CALCULATION</CATEGORY>
+                <CODE>APPLIED_TAX_POINT_DATE_RULE</CODE>
+                <MESSAGE_TEXT>Applied Tax Point Date using this rule: DEFAULT TAX DATE LOGIC</MESSAGE_TEXT>
+                <SEVERITY>0</SEVERITY></MESSAGE>
+              <MESSAGE>
+                <LOCATION>TaxFinder.createTaxResult()</LOCATION>
+                <CATEGORY>CALCULATION</CATEGORY>
+                <CODE>APPLIED_TAX_EXCHANGE_RATE_DATE_RULE</CODE>
+                <MESSAGE_TEXT>Applied Tax Exchange Rate Date using this rule: DEFAULT TAX DATE LOGIC</MESSAGE_TEXT>
+                <SEVERITY>0</SEVERITY></MESSAGE>
+              <MESSAGE>
+                <LOCATION>TaxFinder.createRuleSelectionMessages</LOCATION>
+                <CATEGORY>CALCULATION</CATEGORY>
+                <CODE>TAX_TYPE_SELECTED_RULE</CODE>
+                <MESSAGE_TEXT>Tax Type determined the rule applied. Tax Type: US</MESSAGE_TEXT>
+                <SEVERITY>0</SEVERITY></MESSAGE>
+              <MESSAGE>
+                <LOCATION>ComplianceController</LOCATION>
+                <CATEGORY>CALCULATION</CATEGORY>
+                <CODE>ASSOCIATED_COMPLIANCE_AREA</CODE>
+                <MESSAGE_TEXT>Associated a Compliance Area using: Compliance area determined by intersection algorithm for taxable address type: Ship To Location.</MESSAGE_TEXT>
+                <SEVERITY>0</SEVERITY></MESSAGE>
+              <RULE_ORDER>9980</RULE_ORDER>
+              <TAXABLE_COUNTRY>US</TAXABLE_COUNTRY>
+              <TAXABLE_COUNTRY_NAME>UNITED STATES</TAXABLE_COUNTRY_NAME>
+              <TAXABLE_STATE>KENTUCKY</TAXABLE_STATE>
+              <TAXABLE_COUNTY>HOPKINS</TAXABLE_COUNTY>
+              <TAXABLE_CITY>MADISONVILLE</TAXABLE_CITY>
+              <TAXABLE_POSTCODE>42431</TAXABLE_POSTCODE>
+              <TAX_RATE_CODE>SU</TAX_RATE_CODE>
+              <TAX_TYPE>US</TAX_TYPE>
+              <ZONE_NAME>KENTUCKY</ZONE_NAME>
+              <ZONE_LEVEL>State</ZONE_LEVEL>
+              <ZONE_FIPS_CODE>21</ZONE_FIPS_CODE>
+              <TAX_RATE>0.06</TAX_RATE>
+              <NATURE_OF_TAX>P</NATURE_OF_TAX>
+              <EU_TRANSACTION>false</EU_TRANSACTION>
+              <AUTHORITY_UUID>44771014-cdda-4fa0-a1b6-2ae6c5a38d9a</AUTHORITY_UUID>
+              <AUTHORITY_CURRENCY_CODE>USD</AUTHORITY_CURRENCY_CODE>
+              <CURRENCY_CONVERSION>
+                <TAX_EXCHANGE_RATE_DATE>2025-10-23</TAX_EXCHANGE_RATE_DATE></CURRENCY_CONVERSION>
+              <EXEMPT_AMOUNT>
+                <DOCUMENT_AMOUNT>0.00</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>0.0000000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>0.00</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>0.0000000000</UNROUNDED_AUTHORITY_AMOUNT></EXEMPT_AMOUNT>
+              <GROSS_AMOUNT>
+                <AUTHORITY_AMOUNT>1058.26</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>1058.2600000000</UNROUNDED_AUTHORITY_AMOUNT></GROSS_AMOUNT>
+              <NON_TAXABLE_BASIS>
+                <DOCUMENT_AMOUNT>0.00</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>0.0000000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>0.00</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>0.0000000000</UNROUNDED_AUTHORITY_AMOUNT></NON_TAXABLE_BASIS>
+              <TAXABLE_BASIS>
+                <DOCUMENT_AMOUNT>1058.26</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>1058.2600000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>1058.26</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>1058.2600000000</UNROUNDED_AUTHORITY_AMOUNT></TAXABLE_BASIS>
+              <TAX_AMOUNT>
+                <DOCUMENT_AMOUNT>63.50</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>63.4956000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>63.50</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>63.4956000000</UNROUNDED_AUTHORITY_AMOUNT></TAX_AMOUNT>
+              <TAX_DETERMINATION_DATE>2025-10-23</TAX_DETERMINATION_DATE>
+              <TAX_POINT_DATE>2025-10-23</TAX_POINT_DATE>
+              <ACCRUAL_AMOUNT>
+                <DOCUMENT_AMOUNT>0.00</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>0.0000000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>0.00</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>0.0000000000</UNROUNDED_AUTHORITY_AMOUNT></ACCRUAL_AMOUNT>
+              <VENDOR_TAX>
+                <DOCUMENT_AMOUNT>56.46</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>56.4560878132</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>56.46</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>56.4560878132</UNROUNDED_AUTHORITY_AMOUNT></VENDOR_TAX>
+              <VCT_EFFECTIVE_TAXABLE_BASIS>
+                <DOCUMENT_AMOUNT>0.00</DOCUMENT_AMOUNT>
+                <UNROUNDED_DOCUMENT_AMOUNT>0.0000000000</UNROUNDED_DOCUMENT_AMOUNT>
+                <AUTHORITY_AMOUNT>0.00</AUTHORITY_AMOUNT>
+                <UNROUNDED_AUTHORITY_AMOUNT>0.0000000000</UNROUNDED_AUTHORITY_AMOUNT></VCT_EFFECTIVE_TAXABLE_BASIS></TAX>
+            <TRANSACTION_TYPE>GS</TRANSACTION_TYPE>
+            <UNIT_OF_MEASURE>RL</UNIT_OF_MEASURE>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE7</NAME>
+              <VALUE>1155</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE37</NAME>
+              <VALUE>8156408974 TP REFLV 1"X10 YD BLU</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE38</NAME>
+              <VALUE>165.1155.5320.52610.000.0000.0000.0000</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE40</NAME>
+              <VALUE>108051</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE41</NAME>
+              <VALUE>1</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE43</NAME>
+              <VALUE>300000004349242</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE47</NAME>
+              <VALUE>AP_INVOICES</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE48</NAME>
+              <VALUE>ITEM</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE49</NAME>
+              <VALUE>STANDARD INVOICES</VALUE></USER_ELEMENT>
+            <USER_ELEMENT>
+              <NAME>ATTRIBUTE50</NAME>
+              <VALUE>STANDARD CREATED</VALUE></USER_ELEMENT>
+            <QUANTITIES>
+              <QUANTITY>
+                <AMOUNT>2</AMOUNT>
+                <UOM>RL</UOM></QUANTITY></QUANTITIES>
+            <IS_CREDIT>false</IS_CREDIT>
+            <INVOICE_DATE>2025-10-23</INVOICE_DATE>
+            <OPERATING_LICENSES>
+              <ASSUME_BUYER_FULLY_LICENSED>N</ASSUME_BUYER_FULLY_LICENSED>
+              <ASSUME_SELLER_FULLY_LICENSED>N</ASSUME_SELLER_FULLY_LICENSED></OPERATING_LICENSES>
+            <CUSTOMER_GROUP_NAME>DEFAULT</CUSTOMER_GROUP_NAME>
+            <CUSTOMER_GROUP_OWNER>Coal Operations BU</CUSTOMER_GROUP_OWNER>
+            <BILLED_QUANTITY_TYPE>GROSS</BILLED_QUANTITY_TYPE>
+            <VENDOR_TAX>56.46</VENDOR_TAX>
+            <VENDOR_NAME>AIRGAS USA LLC</VENDOR_NAME>
+            <VENDOR_NUMBER>10098</VENDOR_NUMBER>
+            <TAX_SUMMARY>
+              <TAXABLE_BASIS>1058.26</TAXABLE_BASIS>
+              <NON_TAXABLE_BASIS>0.00</NON_TAXABLE_BASIS>
+              <EXEMPT_AMOUNT>0.00</EXEMPT_AMOUNT>
+              <TAX_RATE>0.06</TAX_RATE>
+              <EFFECTIVE_TAX_RATE>0.0600041578</EFFECTIVE_TAX_RATE>
+              <ACCRUAL_AMOUNT>0.00</ACCRUAL_AMOUNT>
+              <PAY_TO_VENDOR_AMOUNT>0.00</PAY_TO_VENDOR_AMOUNT></TAX_SUMMARY>
+            <TAX_VARIANCE>7.04</TAX_VARIANCE>
+            <CFOP>TION</CFOP></LINE>
+    </INVOICE></OUTDATA>
+</taxCalculationResponse></soap:Body></soap:Envelope>
