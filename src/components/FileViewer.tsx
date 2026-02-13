@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { getPathAtIndex } from '../utils/xmlPathFinder';
-import { extractValuesByPath } from '../utils/xmlExtractor';
+import { extractValuesByPath, getUniqueKeys } from '../utils/xmlExtractor';
 import { ContextMenu } from './ContextMenu';
 import { ExtractionModal } from './ExtractionModal';
+import { FieldSelectionModal } from './FieldSelectionModal';
 
 interface FileViewerProps {
     content: string | null;
@@ -21,6 +22,10 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
     // Extraction Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [extractionData, setExtractionData] = useState<{ path: string[], values: Record<string, string>[] }>({ path: [], values: [] });
+
+    // Field Selection State
+    const [isFieldSelectOpen, setIsFieldSelectOpen] = useState(false);
+    const [availableFields, setAvailableFields] = useState<string[]>([]);
 
     // Handle Right Click
     const handleContextMenu = (e: React.MouseEvent) => {
@@ -50,6 +55,25 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
         if (content && targetPath) {
             const values = extractValuesByPath(content, targetPath);
             setExtractionData({ path: targetPath, values });
+            setIsModalOpen(true);
+            setMenuPos(null);
+        }
+    };
+
+    const handleExtractFields = () => {
+        if (content && targetPath) {
+            const fields = getUniqueKeys(content, targetPath);
+            setAvailableFields(fields);
+            setIsFieldSelectOpen(true);
+            setMenuPos(null);
+        }
+    };
+
+    const executeFieldExtraction = (selectedFields: string[]) => {
+        if (content && targetPath) {
+            const values = extractValuesByPath(content, targetPath, selectedFields);
+            setExtractionData({ path: targetPath, values });
+            setIsFieldSelectOpen(false);
             setIsModalOpen(true);
         }
     };
@@ -144,6 +168,7 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
                     y={menuPos.y}
                     onClose={() => setMenuPos(null)}
                     onExtract={handleExtract}
+                    onExtractFields={handleExtractFields}
                 />
             )}
 
@@ -152,6 +177,13 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
                 onClose={() => setIsModalOpen(false)}
                 path={extractionData.path}
                 values={extractionData.values}
+            />
+
+            <FieldSelectionModal
+                isOpen={isFieldSelectOpen}
+                onClose={() => setIsFieldSelectOpen(false)}
+                onSubmit={executeFieldExtraction}
+                availableFields={availableFields}
             />
         </div>
     );

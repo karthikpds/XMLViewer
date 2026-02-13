@@ -2,7 +2,12 @@
  * Extracts values of all elements matching the given path hierarchy.
  * Returns an array of objects representing the extracted data.
  */
-export function extractValuesByPath(xml: string, path: string[]) {
+/**
+ * Extracts values of all elements matching the given path hierarchy.
+ * Returns an array of objects representing the extracted data.
+ * @param fields Optional list of specific fields (XPaths or tag names) to extract.
+ */
+export function extractValuesByPath(xml: string, path: string[], fields?: string[]) {
     try {
         const parser = new DOMParser();
         let doc = parser.parseFromString(xml, "text/xml");
@@ -90,33 +95,29 @@ export function extractValuesByPath(xml: string, path: string[]) {
                         pTax = pTax.parentElement;
                     }
 
-                    // Check if it has child elements (structured data)
-                    const children = Array.from(el.children);
+                    const rowData: Record<string, string> = {};
+                    if (lineId) rowData['LINE_ID'] = lineId;
+                    if (authorityName) rowData['AUTHORITY_NAME'] = authorityName;
 
-                    if (children.length > 0) {
-                        // Structured Object
-                        const rowData: Record<string, string> = {};
-                        if (lineId) {
-                            rowData['LINE_ID'] = lineId;
-                        }
-                        if (authorityName) {
-                            rowData['AUTHORITY_NAME'] = authorityName;
-                        }
-                        children.forEach(child => {
-                            rowData[child.tagName] = child.textContent || '';
+                    if (fields && fields.length > 0) {
+                        // Extract specific fields using robust path traversal
+                        fields.forEach(field => {
+                            rowData[field] = getChildValueByPath(el, field);
                         });
                         results.push(rowData);
                     } else {
-                        // Simple Value
-                        const rowData: Record<string, string> = {};
-                        if (lineId) {
-                            rowData['LINE_ID'] = lineId;
+                        // Default: Extract direct children
+                        const children = Array.from(el.children);
+                        if (children.length > 0) {
+                            children.forEach(child => {
+                                rowData[child.tagName] = child.textContent || '';
+                            });
+                            results.push(rowData);
+                        } else {
+                            // Simple Value
+                            rowData['Value'] = el.textContent || '';
+                            results.push(rowData);
                         }
-                        if (authorityName) {
-                            rowData['AUTHORITY_NAME'] = authorityName;
-                        }
-                        rowData['Value'] = el.textContent || '';
-                        results.push(rowData);
                     }
                 }
             }
@@ -129,6 +130,97 @@ export function extractValuesByPath(xml: string, path: string[]) {
         console.error("Extraction Failed", e);
         return [];
     }
+}
+
+/**
+ * Scans the XML for the given path and returns all unique child tag names found.
+ * Useful for populating the "Extract Fields" dropdown.
+ */
+export function getUniqueKeys(xml: string, path: string[]): string[] {
+    // Re-use extraction logic to find nodes, but collecting keys instead of values.
+    // This is a simplified version of extractValuesByPath
+    try {
+        const parser = new DOMParser();
+        let doc = parser.parseFromString(xml, "text/xml");
+
+        if (doc.querySelector('parsererror')) {
+            let cleanXml = xml.replace(/<\?xml.*?\?>/g, '').replace(/&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[a-f\d]+);)/gi, '&amp;');
+            doc = parser.parseFromString(`<__XML_Fragment_Root__>${cleanXml}</__XML_Fragment_Root__>`, "text/xml");
+        }
+
+        const keys = new Set<string>();
+        const targetTag = path[path.length - 1];
+
+        const walker = doc.createTreeWalker(doc, NodeFilter.SHOW_ELEMENT, null);
+        let currentNode = walker.nextNode();
+
+        while (currentNode) {
+            const el = currentNode as Element;
+            if (checkTagMatch(el.tagName, targetTag)) {
+                // Verify Hierarchy
+                let parent = el.parentElement;
+                let pathIdx = path.length - 2;
+                let matchesPath = true;
+                while (pathIdx >= 0 && parent) {
+                    if (parent.tagName === '__XML_Fragment_Root__') { parent = parent.parentElement; continue; }
+                    if (!checkTagMatch(parent.tagName, path[pathIdx])) { matchesPath = false; break; }
+                    parent = parent.parentElement;
+                    pathIdx--;
+                }
+
+                if (matchesPath && pathIdx < 0) {
+                    // Collect all descendant paths recursively
+                    collectDescendantPaths(el, '', keys);
+                }
+            }
+            currentNode = walker.nextNode();
+        }
+        return Array.from(keys).sort();
+    } catch (e) {
+        console.error("getUniqueKeys Failed", e);
+        return [];
+    }
+}
+
+function collectDescendantPaths(el: Element, currentPath: string, keys: Set<string>) {
+    Array.from(el.children).forEach(child => {
+        const fullPath = currentPath ? `${currentPath}/${child.tagName}` : child.tagName;
+        keys.add(fullPath);
+        collectDescendantPaths(child, fullPath, keys);
+    });
+}
+
+/**
+ * Traverses an element down a specific path (e.g. "Child/GrandChild") using lenient matching.
+ * Only returns textContent for leaf elements (no child elements).
+ */
+function getChildValueByPath(root: Element, pathStr: string): string {
+    const parts = pathStr.split('/');
+    let current: Element | null = root;
+
+    for (const part of parts) {
+        if (!current) return '';
+        const found: Element | undefined = Array.from(current.children).find(c => checkTagMatch(c.tagName, part));
+        current = found || null;
+    }
+
+    if (!current) return '';
+
+    // Only return textContent for leaf elements (no child elements)
+    // For parent elements, return empty to avoid dumping all descendant text
+    if (current.children.length === 0) {
+        return current.textContent || '';
+    }
+
+    // For parent elements, collect only direct text nodes (not descendant text)
+    let directText = '';
+    current.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const trimmed = (node.textContent || '').trim();
+            if (trimmed) directText += trimmed + ' ';
+        }
+    });
+    return directText.trim();
 }
 
 /**

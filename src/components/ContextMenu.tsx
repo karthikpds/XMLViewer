@@ -7,9 +7,10 @@ interface ContextMenuProps {
     y: number;
     onClose: () => void;
     onExtract: () => void;
+    onExtractFields: () => void;
 }
 
-export function ContextMenu({ x, y, onClose, onExtract }: ContextMenuProps) {
+export function ContextMenu({ x, y, onClose, onExtract, onExtractFields }: ContextMenuProps) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -73,6 +74,18 @@ export function ContextMenu({ x, y, onClose, onExtract }: ContextMenuProps) {
             >
                 <FileCode className="w-4 h-4" />
                 Extract All
+            </button>
+
+            <button
+                onClick={onExtractFields}
+                className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-2 hover:bg-[#3b82f6] hover:text-white transition-colors"
+                style={{ color: 'inherit' }}
+            >
+                <div className="w-4 h-4 flex items-center justify-center font-mono text-[10px] border border-current rounded bg-transparent">
+                    {/* Manual icon for fields */}
+                    fx
+                </div>
+                Extract Fields...
             </button>
 
             <div style={{ height: '1px', backgroundColor: '#e2e8f0', margin: '4px 0' }} />
