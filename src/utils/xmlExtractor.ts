@@ -100,11 +100,72 @@ export function extractValuesByPath(xml: string, path: string[], fields?: string
                     if (authorityName) rowData['AUTHORITY_NAME'] = authorityName;
 
                     if (fields && fields.length > 0) {
-                        // Extract specific fields using robust path traversal
-                        fields.forEach(field => {
-                            rowData[field] = getChildValueByPath(el, field);
-                        });
-                        results.push(rowData);
+                        // Detect if fields reference repeating children
+                        // e.g., if user selects LINE/LINE_NUMBER, LINE/TAX/TAX_AMOUNT, INVOICE_NUMBER
+                        // We need to find the common repeating parent (LINE) and iterate over all instances
+
+                        // Separate fields into: direct children (no slash) and nested paths (with slash)
+                        const directFields = fields.filter(f => !f.includes('/'));
+                        const nestedFields = fields.filter(f => f.includes('/'));
+
+                        // Find repeating parent(s) from nested fields
+                        const nestedPrefixes = new Set(nestedFields.map(f => f.split('/')[0]));
+
+                        if (nestedPrefixes.size > 0) {
+                            // Find the primary repeating prefix (use the first one)
+                            const primaryPrefix = Array.from(nestedPrefixes)[0];
+                            const repeatingChildren = Array.from(el.children).filter(
+                                c => checkTagMatch(c.tagName, primaryPrefix)
+                            );
+
+                            if (repeatingChildren.length > 0) {
+                                // Create one row per repeating child
+                                repeatingChildren.forEach(repeatingChild => {
+                                    const row: Record<string, string> = {};
+                                    if (lineId) row['LINE_ID'] = lineId;
+                                    if (authorityName) row['AUTHORITY_NAME'] = authorityName;
+
+                                    // Extract direct fields from the parent element (el)
+                                    directFields.forEach(field => {
+                                        row[field] = getChildValueByPath(el, field);
+                                    });
+
+                                    // Extract nested fields relative to the repeating child
+                                    nestedFields.forEach(field => {
+                                        const parts = field.split('/');
+                                        if (checkTagMatch(parts[0], primaryPrefix)) {
+                                            // Strip the prefix and search within this repeating child
+                                            const subPath = parts.slice(1).join('/');
+                                            if (subPath) {
+                                                row[field] = getChildValueByPath(repeatingChild, subPath);
+                                            } else {
+                                                // Field IS the repeating element itself
+                                                row[field] = repeatingChild.children.length === 0
+                                                    ? (repeatingChild.textContent || '')
+                                                    : '';
+                                            }
+                                        } else {
+                                            // Different prefix - extract from parent
+                                            row[field] = getChildValueByPath(el, field);
+                                        }
+                                    });
+
+                                    results.push(row);
+                                });
+                            } else {
+                                // No repeating children found, fall back to single row
+                                fields.forEach(field => {
+                                    rowData[field] = getChildValueByPath(el, field);
+                                });
+                                results.push(rowData);
+                            }
+                        } else {
+                            // All direct fields, single row
+                            fields.forEach(field => {
+                                rowData[field] = getChildValueByPath(el, field);
+                            });
+                            results.push(rowData);
+                        }
                     } else {
                         // Default: Extract direct children
                         const children = Array.from(el.children);

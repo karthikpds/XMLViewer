@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { X, Plus, Check } from 'lucide-react';
+import { X, Plus, Check, Save, FolderOpen, Trash2 } from 'lucide-react';
 
 interface FieldSelectionModalProps {
     isOpen: boolean;
@@ -9,15 +9,43 @@ interface FieldSelectionModalProps {
     availableFields: string[];
 }
 
+interface SavedPreset {
+    name: string;
+    fields: string[];
+    createdAt: number;
+}
+
+const PRESETS_STORAGE_KEY = 'xmlviewer-field-presets';
+
+function loadPresets(): SavedPreset[] {
+    try {
+        const raw = localStorage.getItem(PRESETS_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch {
+        return [];
+    }
+}
+
+function savePresetsToStorage(presets: SavedPreset[]) {
+    localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(presets));
+}
+
 export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields }: FieldSelectionModalProps) {
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState('');
+    const [presets, setPresets] = useState<SavedPreset[]>([]);
+    const [showSaveInput, setShowSaveInput] = useState(false);
+    const [presetName, setPresetName] = useState('');
+    const [showPresets, setShowPresets] = useState(false);
 
-    // Reset state when modal opens
+    // Load presets + reset state when modal opens
     useEffect(() => {
         if (isOpen) {
             setSelectedFields([]);
             setInputValue('');
+            setPresets(loadPresets());
+            setShowSaveInput(false);
+            setPresetName('');
         }
     }, [isOpen]);
 
@@ -56,6 +84,43 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
         }
     };
 
+    const handleSavePreset = () => {
+        if (!presetName.trim() || selectedFields.length === 0) return;
+        const newPreset: SavedPreset = {
+            name: presetName.trim(),
+            fields: [...selectedFields],
+            createdAt: Date.now()
+        };
+        const updated = [...presets.filter(p => p.name !== newPreset.name), newPreset];
+        setPresets(updated);
+        savePresetsToStorage(updated);
+        setShowSaveInput(false);
+        setPresetName('');
+    };
+
+    const handleLoadPreset = (preset: SavedPreset) => {
+        setSelectedFields([...preset.fields]);
+        setShowPresets(false);
+    };
+
+    const handleDeletePreset = (name: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        const updated = presets.filter(p => p.name !== name);
+        setPresets(updated);
+        savePresetsToStorage(updated);
+    };
+
+    const handleSaveKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSavePreset();
+        }
+        if (e.key === 'Escape') {
+            setShowSaveInput(false);
+            setPresetName('');
+        }
+    };
+
     return (
         <div style={{
             position: 'fixed',
@@ -77,7 +142,7 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                 borderRadius: '12px',
                 boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
                 width: '100%',
-                maxWidth: '32rem',
+                maxWidth: '56rem',
                 height: '70vh',
                 display: 'grid',
                 gridTemplateRows: 'auto 1fr auto',
@@ -95,16 +160,124 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                     <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                         Select Fields to Extract
                     </h2>
-                    <button onClick={onClose} style={{
-                        padding: '4px',
-                        borderRadius: '50%',
-                        color: 'var(--text-secondary)',
-                        cursor: 'pointer',
-                        background: 'transparent',
-                        border: 'none'
-                    }}>
-                        <X className="w-5 h-5" />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        {/* Load Preset Button */}
+                        {presets.length > 0 && (
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    onClick={() => setShowPresets(!showPresets)}
+                                    title="Load saved preset"
+                                    style={{
+                                        padding: '6px 12px',
+                                        borderRadius: '8px',
+                                        color: 'var(--accent-color)',
+                                        cursor: 'pointer',
+                                        background: 'rgba(56, 189, 248, 0.1)',
+                                        border: '1px solid rgba(56, 189, 248, 0.2)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        fontSize: '0.8rem',
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    <FolderOpen style={{ width: '14px', height: '14px' }} />
+                                    Presets ({presets.length})
+                                </button>
+
+                                {/* Presets Dropdown */}
+                                {showPresets && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '100%',
+                                        right: 0,
+                                        marginTop: '4px',
+                                        backgroundColor: 'var(--bg-color)',
+                                        border: '1px solid var(--border-color)',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
+                                        zIndex: 10,
+                                        minWidth: '280px',
+                                        maxHeight: '300px',
+                                        overflowY: 'auto'
+                                    }}>
+                                        <div style={{
+                                            padding: '8px 12px',
+                                            fontSize: '0.7rem',
+                                            fontWeight: 600,
+                                            color: 'var(--text-secondary)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            borderBottom: '1px solid var(--border-color)'
+                                        }}>
+                                            Saved Presets
+                                        </div>
+                                        {presets.map(preset => (
+                                            <div
+                                                key={preset.name}
+                                                onClick={() => handleLoadPreset(preset)}
+                                                style={{
+                                                    padding: '10px 12px',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    borderBottom: '1px solid var(--border-color)',
+                                                    transition: 'background 0.15s'
+                                                }}
+                                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'var(--surface-color)')}
+                                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+                                            >
+                                                <div>
+                                                    <div style={{
+                                                        fontSize: '0.875rem',
+                                                        fontWeight: 500,
+                                                        color: 'var(--text-primary)'
+                                                    }}>
+                                                        {preset.name}
+                                                    </div>
+                                                    <div style={{
+                                                        fontSize: '0.7rem',
+                                                        color: 'var(--text-secondary)',
+                                                        marginTop: '2px'
+                                                    }}>
+                                                        {preset.fields.length} fields · {preset.fields.slice(0, 3).join(', ')}{preset.fields.length > 3 ? '...' : ''}
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={(e) => handleDeletePreset(preset.name, e)}
+                                                    title="Delete preset"
+                                                    style={{
+                                                        padding: '4px',
+                                                        borderRadius: '4px',
+                                                        color: 'var(--text-secondary)',
+                                                        cursor: 'pointer',
+                                                        background: 'transparent',
+                                                        border: 'none',
+                                                        flexShrink: 0
+                                                    }}
+                                                    onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
+                                                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                                                >
+                                                    <Trash2 style={{ width: '14px', height: '14px' }} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <button onClick={onClose} style={{
+                            padding: '4px',
+                            borderRadius: '50%',
+                            color: 'var(--text-secondary)',
+                            cursor: 'pointer',
+                            background: 'transparent',
+                            border: 'none'
+                        }}>
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Body - scrollable */}
@@ -175,18 +348,100 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.05em',
                                 display: 'flex',
-                                justifyContent: 'space-between'
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
                             }}>
                                 <span>Selected ({selectedFields.length})</span>
-                                <button onClick={() => setSelectedFields([])} style={{
-                                    color: 'var(--accent-color)',
-                                    fontSize: '0.75rem',
-                                    cursor: 'pointer',
-                                    background: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'underline'
-                                }}>Clear All</button>
+                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                    {/* Save as Preset button */}
+                                    <button
+                                        onClick={() => setShowSaveInput(!showSaveInput)}
+                                        style={{
+                                            color: 'var(--accent-color)',
+                                            fontSize: '0.75rem',
+                                            cursor: 'pointer',
+                                            background: 'transparent',
+                                            border: 'none',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '4px'
+                                        }}
+                                    >
+                                        <Save style={{ width: '12px', height: '12px' }} />
+                                        Save Preset
+                                    </button>
+                                    <button onClick={() => setSelectedFields([])} style={{
+                                        color: 'var(--accent-color)',
+                                        fontSize: '0.75rem',
+                                        cursor: 'pointer',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        textDecoration: 'underline'
+                                    }}>Clear All</button>
+                                </div>
                             </div>
+
+                            {/* Save Preset Input */}
+                            {showSaveInput && (
+                                <div style={{
+                                    display: 'flex',
+                                    gap: '0.5rem',
+                                    marginBottom: '0.75rem',
+                                    padding: '0.5rem',
+                                    backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                                    border: '1px solid rgba(56, 189, 248, 0.15)',
+                                    borderRadius: '8px'
+                                }}>
+                                    <input
+                                        type="text"
+                                        value={presetName}
+                                        onChange={(e) => setPresetName(e.target.value)}
+                                        onKeyDown={handleSaveKeyDown}
+                                        placeholder="Enter preset name..."
+                                        style={{
+                                            flex: 1,
+                                            backgroundColor: 'var(--bg-color)',
+                                            border: '1px solid var(--border-color)',
+                                            borderRadius: '6px',
+                                            padding: '0.375rem 0.75rem',
+                                            fontSize: '0.8rem',
+                                            color: 'var(--text-primary)',
+                                            outline: 'none'
+                                        }}
+                                        autoFocus
+                                    />
+                                    <button
+                                        onClick={handleSavePreset}
+                                        disabled={!presetName.trim()}
+                                        style={{
+                                            backgroundColor: 'var(--accent-color)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '6px',
+                                            padding: '0.375rem 0.75rem',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 500,
+                                            cursor: presetName.trim() ? 'pointer' : 'default',
+                                            opacity: presetName.trim() ? 1 : 0.5
+                                        }}
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={() => { setShowSaveInput(false); setPresetName(''); }}
+                                        style={{
+                                            color: 'var(--text-secondary)',
+                                            background: 'transparent',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            padding: '0.375rem'
+                                        }}
+                                    >
+                                        <X style={{ width: '14px', height: '14px' }} />
+                                    </button>
+                                </div>
+                            )}
+
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 {selectedFields.map(field => (
                                     <span key={field} style={{
@@ -235,7 +490,7 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                         ) : (
                             <div style={{
                                 display: 'grid',
-                                gridTemplateColumns: '1fr 1fr',
+                                gridTemplateColumns: '1fr 1fr 1fr',
                                 gap: '0.5rem'
                             }}>
                                 {filteredAvailable.map(field => (
