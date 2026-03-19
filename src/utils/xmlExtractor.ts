@@ -105,26 +105,21 @@ export function extractValuesByPath(xml: string, path: string[], fields?: string
                         const nestedFields = fields.filter(f => f.includes('/'));
 
                         if (nestedFields.length > 0) {
-                            // Find the common prefix segments shared by all nested fields
+                            // Use the LONGEST nested field path as a guide to find the
+                            // repeating level. Fields at different depths mix (e.g.,
+                            // LINE/LINE_NUMBER + LINE/TAX/VENDOR_TAX/AMOUNT), so using
+                            // the common prefix of ALL fields would stop too early.
                             const nestedParts = nestedFields.map(f => f.split('/'));
-                            const commonPrefix: string[] = [];
-                            for (let i = 0; i < nestedParts[0].length; i++) {
-                                const segment = nestedParts[0][i];
-                                if (nestedParts.every(parts => parts.length > i && checkTagMatch(parts[i], segment))) {
-                                    commonPrefix.push(segment);
-                                } else {
-                                    break;
-                                }
-                            }
+                            const guidePath = nestedParts.slice().sort((a, b) => b.length - a.length)[0];
 
-                            // Walk down the common prefix from the matched element,
+                            // Walk down the guide path from the matched element,
                             // looking for the first level where elements repeat
                             let currentElements: Element[] = [el];
                             let consumedSegments = 0;
                             let foundRepeating = false;
 
-                            for (let i = 0; i < commonPrefix.length; i++) {
-                                const segment = commonPrefix[i];
+                            for (let i = 0; i < guidePath.length; i++) {
+                                const segment = guidePath[i];
                                 const nextElements: Element[] = [];
                                 for (const parent of currentElements) {
                                     const matches = Array.from(parent.children).filter(
@@ -155,31 +150,55 @@ export function extractValuesByPath(xml: string, path: string[], fields?: string
                                         row[field] = getChildValueByPath(el, field);
                                     });
 
-                                    // Extract nested fields relative to the repeating element
+                                    // Extract nested fields — resolve each relative to the
+                                    // appropriate ancestor based on how deep its path goes
                                     nestedFields.forEach(field => {
                                         const parts = field.split('/');
-                                        const remainingPath = parts.slice(consumedSegments).join('/');
-                                        if (remainingPath) {
-                                            row[field] = getChildValueByPath(repeatingEl, remainingPath);
+
+                                        // How many leading segments match the consumed guide path?
+                                        let matchDepth = 0;
+                                        for (let i = 0; i < Math.min(parts.length, consumedSegments); i++) {
+                                            if (checkTagMatch(parts[i], guidePath[i])) {
+                                                matchDepth++;
+                                            } else {
+                                                break;
+                                            }
+                                        }
+
+                                        if (matchDepth >= consumedSegments) {
+                                            // Field goes through/past the repeating level
+                                            const remainingPath = parts.slice(consumedSegments).join('/');
+                                            if (remainingPath) {
+                                                row[field] = getChildValueByPath(repeatingEl, remainingPath);
+                                            } else {
+                                                row[field] = repeatingEl.children.length === 0
+                                                    ? (repeatingEl.textContent || '')
+                                                    : '';
+                                            }
                                         } else {
-                                            // Field path matches the repeating element itself
-                                            row[field] = repeatingEl.children.length === 0
-                                                ? (repeatingEl.textContent || '')
-                                                : '';
+                                            // Field diverges before the repeating level — walk
+                                            // up from the repeating element to the right ancestor
+                                            let ancestor: Element | null = repeatingEl;
+                                            for (let up = 0; up < consumedSegments - matchDepth; up++) {
+                                                ancestor = ancestor?.parentElement || null;
+                                            }
+                                            const remainingPath = parts.slice(matchDepth).join('/');
+                                            if (ancestor && remainingPath) {
+                                                row[field] = getChildValueByPath(ancestor, remainingPath);
+                                            } else if (ancestor) {
+                                                row[field] = ancestor.children.length === 0
+                                                    ? (ancestor.textContent || '')
+                                                    : '';
+                                            } else {
+                                                row[field] = '';
+                                            }
                                         }
                                     });
 
                                     results.push(row);
                                 });
-                            } else if (currentElements.length > 0) {
-                                // No repeating level found, but we walked to some elements
-                                // Fall back to single row
-                                fields.forEach(field => {
-                                    rowData[field] = getChildValueByPath(el, field);
-                                });
-                                results.push(rowData);
                             } else {
-                                // No matching children at all, single row
+                                // No repeating level found, fall back to single row
                                 fields.forEach(field => {
                                     rowData[field] = getChildValueByPath(el, field);
                                 });
