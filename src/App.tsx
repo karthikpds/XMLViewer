@@ -13,7 +13,7 @@ function App() {
   const [files, setFiles] = useState<FileData[]>([]);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [highlightMatch, setHighlightMatch] = useState<{ index: number, length: number } | null>(null);
+  const [highlightMatch, setHighlightMatch] = useState<{ index: number, length: number, nonce?: number } | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
   const [rightSidebarWidth, setRightSidebarWidth] = useState(300);
@@ -145,8 +145,13 @@ function App() {
         if (!file.name.endsWith('.xml')) return;
 
         try {
-          const doc = parser.parseFromString(file.content, "text/xml");
-          if (doc.querySelector('parsererror')) return;
+          let doc = parser.parseFromString(file.content, "text/xml");
+          if (doc.querySelector('parsererror')) {
+            // Sanitize unescaped ampersands and retry
+            const sanitized = file.content.replace(/&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[a-f\d]+);)/gi, '&amp;');
+            doc = parser.parseFromString(sanitized, "text/xml");
+            if (doc.querySelector('parsererror')) return;
+          }
 
           const walker = doc.createTreeWalker(doc, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null);
           let currentNode = walker.nextNode();
@@ -212,20 +217,24 @@ function App() {
             }
 
             if (isMatch && matchContextNode) {
-              // Find the specific match target in raw content
+              // Find the query's position in raw content.
+              // First try to anchor to the match target (tag/attr/text), then locate the query near it.
               let actualStartIndex = -1;
-              const searchStr = matchTargetStr.toLowerCase() || lowerQuery;
-              const foundIndex = lowerContent.indexOf(searchStr, lastRawIndex);
 
-              if (foundIndex !== -1) {
-                const queryIndex = lowerContent.indexOf(lowerQuery, foundIndex);
-                if (queryIndex !== -1) {
-                  actualStartIndex = queryIndex;
-                  lastRawIndex = queryIndex + 1;
-                } else {
-                  lastRawIndex = foundIndex + 1;
-                }
+              // For tag name matches, anchor to the opening "<tagName" to avoid matching closing tags
+              const anchorStr = (currentNode.nodeType === Node.ELEMENT_NODE)
+                ? ("<" + (currentNode as Element).tagName).toLowerCase()
+                : matchTargetStr.toLowerCase();
+
+              const anchorIndex = anchorStr ? lowerContent.indexOf(anchorStr, lastRawIndex) : -1;
+              const searchFrom = anchorIndex !== -1 ? anchorIndex : lastRawIndex;
+
+              const queryIndex = lowerContent.indexOf(lowerQuery, searchFrom);
+              if (queryIndex !== -1) {
+                actualStartIndex = queryIndex;
+                lastRawIndex = queryIndex + 1;
               } else {
+                // Fallback: search from where we left off
                 const fallbackIndex = lowerContent.indexOf(lowerQuery, lastRawIndex);
                 if (fallbackIndex !== -1) {
                   actualStartIndex = fallbackIndex;
@@ -256,12 +265,14 @@ function App() {
               });
 
               results.push({
-                id: `${file.path}-${results.length}`,
+                id: `${file.id}-${results.length}`,
+                fileId: file.id,
                 fileName: file.name,
                 context: contextItems,
                 startIndex: actualStartIndex,
                 length: query.length,
-                matchIndex: fileMatchCount
+                matchIndex: fileMatchCount,
+                query: query
               });
               fileMatchCount++;
             }
@@ -276,17 +287,18 @@ function App() {
     }, 500);
   }, [files]);
 
-  const handleResultClick = (result: SearchResult & { matchIndex?: number }) => {
-    const targetFile = files.find(f => f.name === result.fileName);
+  const handleResultClick = (result: SearchResult) => {
+    const targetFile = files.find(f => f.id === result.fileId);
 
     if (targetFile) {
       setSelectedFile(targetFile);
 
       if (result.startIndex !== undefined && result.startIndex >= 0) {
-        setHighlightMatch({ index: result.startIndex, length: result.length });
+        // Use Date.now() as a nonce to force re-navigation even when clicking the same result twice
+        setHighlightMatch({ index: result.startIndex, length: result.length, nonce: Date.now() });
       } else {
-        // Fallback
-        const query = (document.querySelector('input[type="text"]') as HTMLInputElement)?.value || "";
+        // Fallback: use stored query to find the Nth occurrence
+        const query = result.query;
         if (query) {
           const indices: number[] = [];
           let i = -1;
@@ -295,9 +307,9 @@ function App() {
           }
           const targetIndex = indices[result.matchIndex || 0];
           if (targetIndex !== undefined) {
-            setHighlightMatch({ index: targetIndex, length: query.length });
+            setHighlightMatch({ index: targetIndex, length: query.length, nonce: Date.now() });
           } else if (indices.length > 0) {
-            setHighlightMatch({ index: indices[0], length: query.length });
+            setHighlightMatch({ index: indices[0], length: query.length, nonce: Date.now() });
           }
         }
       }
@@ -318,11 +330,12 @@ function App() {
       />
       <div className="h-full overflow-hidden relative border-r border-[var(--border-color)]">
         <FileViewer
-          key={selectedFile?.path}
+          key={selectedFile?.id}
           content={selectedFile?.content || null}
           fileName={selectedFile?.name || null}
           highlightIndex={highlightMatch?.index}
           matchLength={highlightMatch?.length}
+          highlightNonce={highlightMatch?.nonce}
         />
       </div>
 

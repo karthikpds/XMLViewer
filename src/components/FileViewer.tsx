@@ -10,9 +10,10 @@ interface FileViewerProps {
     fileName: string | null;
     highlightIndex?: number | null; // Start index of the match
     matchLength?: number;
+    highlightNonce?: number; // Forces re-navigation when clicking the same result twice
 }
 
-export function FileViewer({ content, fileName, highlightIndex, matchLength }: FileViewerProps) {
+export function FileViewer({ content, fileName, highlightIndex, matchLength, highlightNonce }: FileViewerProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Context Menu State
@@ -80,64 +81,45 @@ export function FileViewer({ content, fileName, highlightIndex, matchLength }: F
 
     useEffect(() => {
         if (highlightIndex !== undefined && highlightIndex !== null && textareaRef.current && matchLength) {
-            const textarea = textareaRef.current;
+            let cancelled = false;
 
-            // Strategy: Mirror Div Calculation with Delay
-            // We wrap in timeout to ensure the new content is fully rendered and layout is stable
-            // before we calculate the scroll position. 
-            // This is critical when switching files (where content prop changes).
+            // Use a timeout to let React StrictMode complete its mount cycle
+            // and ensure the textarea has been laid out by the browser.
+            const doScroll = () => {
+                if (cancelled) return;
+                const textarea = textareaRef.current;
+                if (!textarea) return;
 
-            setTimeout(() => {
-                const mirror = document.createElement('div');
-                const style = window.getComputedStyle(textarea);
-
-                // Copy relevant styles
-                Array.from(style).forEach((key) => {
-                    mirror.style.setProperty(key, style.getPropertyValue(key));
-                });
-
-                // Overwrite specific layout styles
-                mirror.style.position = 'absolute';
-                mirror.style.top = '0';
-                mirror.style.left = '-9999px';
-                mirror.style.visibility = 'hidden';
-                mirror.style.height = 'auto';
-                mirror.style.width = style.width;
-                mirror.style.maxWidth = style.maxWidth;
-                mirror.style.overflow = 'hidden';
-                mirror.style.whiteSpace = 'pre-wrap';
-                mirror.style.wordWrap = 'break-word';
-
-                const textBefore = textarea.value.substring(0, highlightIndex);
-                mirror.textContent = textBefore;
-
-                if (textBefore.endsWith('\n')) {
-                    mirror.textContent += '\u200b';
+                // If the textarea hasn't computed its layout yet (scrollHeight is too small),
+                // retry after a short delay. This handles large files that take time to lay out.
+                if (textarea.scrollHeight <= textarea.clientHeight) {
+                    setTimeout(doScroll, 100);
+                    return;
                 }
 
-                document.body.appendChild(mirror);
-                const targetHeight = mirror.offsetHeight;
-                document.body.removeChild(mirror);
+                // Count newlines before the target to determine vertical position.
+                const textBefore = textarea.value.substring(0, highlightIndex);
+                const linesBefore = (textBefore.match(/\n/g) || []).length;
+                const totalLines = (textarea.value.match(/\n/g) || []).length + 1;
+                const pixelsPerLine = textarea.scrollHeight / totalLines;
+                const targetPixel = linesBefore * pixelsPerLine;
 
-                const viewHeight = textarea.clientHeight;
+                const targetScroll = Math.max(0, targetPixel - (textarea.clientHeight / 3));
 
-                // Disable smooth scrolling temporarily for the jump
-                textarea.style.scrollBehavior = 'auto';
-
-                textarea.scrollTop = Math.max(0, targetHeight - (viewHeight / 3));
-
-                // Restore smooth scrolling (optional, but let's keep it auto for now to ensure robustness)
-                // textarea.style.scrollBehavior = originalBehavior;
-
+                // Order matters: focus() resets scrollTop, so we must set scroll AFTER focus.
                 textarea.focus();
                 textarea.setSelectionRange(highlightIndex, highlightIndex + matchLength);
+                textarea.style.scrollBehavior = 'auto';
+                textarea.scrollTop = targetScroll;
+            };
+            const timer = setTimeout(doScroll, 50);
 
-                // Trigger blur/focus cycle
-                textarea.blur();
-                textarea.focus();
-            }, 100);
+            return () => {
+                cancelled = true;
+                clearTimeout(timer);
+            };
         }
-    }, [highlightIndex, matchLength, content]);
+    }, [highlightIndex, matchLength, content, highlightNonce]);
 
     return (
         <div className="h-full flex flex-col">

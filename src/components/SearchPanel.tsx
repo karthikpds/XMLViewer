@@ -2,11 +2,13 @@ import { Search } from 'lucide-react';
 
 export interface SearchResult {
     id: string;
+    fileId: string;
     fileName: string;
     context: { text: string; indent: number; isMatch?: boolean }[];
     startIndex: number;
     length: number;
     matchIndex?: number;
+    query: string;
 }
 
 interface SearchPanelProps {
