@@ -100,27 +100,52 @@ export function extractValuesByPath(xml: string, path: string[], fields?: string
                     if (authorityName) rowData['AUTHORITY_NAME'] = authorityName;
 
                     if (fields && fields.length > 0) {
-                        // Detect if fields reference repeating children
-                        // e.g., if user selects LINE/LINE_NUMBER, LINE/TAX/TAX_AMOUNT, INVOICE_NUMBER
-                        // We need to find the common repeating parent (LINE) and iterate over all instances
-
                         // Separate fields into: direct children (no slash) and nested paths (with slash)
                         const directFields = fields.filter(f => !f.includes('/'));
                         const nestedFields = fields.filter(f => f.includes('/'));
 
-                        // Find repeating parent(s) from nested fields
-                        const nestedPrefixes = new Set(nestedFields.map(f => f.split('/')[0]));
+                        if (nestedFields.length > 0) {
+                            // Find the common prefix segments shared by all nested fields
+                            const nestedParts = nestedFields.map(f => f.split('/'));
+                            const commonPrefix: string[] = [];
+                            for (let i = 0; i < nestedParts[0].length; i++) {
+                                const segment = nestedParts[0][i];
+                                if (nestedParts.every(parts => parts.length > i && checkTagMatch(parts[i], segment))) {
+                                    commonPrefix.push(segment);
+                                } else {
+                                    break;
+                                }
+                            }
 
-                        if (nestedPrefixes.size > 0) {
-                            // Find the primary repeating prefix (use the first one)
-                            const primaryPrefix = Array.from(nestedPrefixes)[0];
-                            const repeatingChildren = Array.from(el.children).filter(
-                                c => checkTagMatch(c.tagName, primaryPrefix)
-                            );
+                            // Walk down the common prefix from the matched element,
+                            // looking for the first level where elements repeat
+                            let currentElements: Element[] = [el];
+                            let consumedSegments = 0;
+                            let foundRepeating = false;
 
-                            if (repeatingChildren.length > 0) {
-                                // Create one row per repeating child
-                                repeatingChildren.forEach(repeatingChild => {
+                            for (let i = 0; i < commonPrefix.length; i++) {
+                                const segment = commonPrefix[i];
+                                const nextElements: Element[] = [];
+                                for (const parent of currentElements) {
+                                    const matches = Array.from(parent.children).filter(
+                                        c => checkTagMatch(c.tagName, segment)
+                                    );
+                                    nextElements.push(...matches);
+                                }
+                                consumedSegments = i + 1;
+                                if (nextElements.length === 0) break;
+                                if (nextElements.length > currentElements.length) {
+                                    // This level is repeating (e.g., 5 TAX elements under 1 LINE)
+                                    currentElements = nextElements;
+                                    foundRepeating = true;
+                                    break;
+                                }
+                                currentElements = nextElements;
+                            }
+
+                            if (foundRepeating && currentElements.length > 0) {
+                                // Create one row per repeating element
+                                currentElements.forEach(repeatingEl => {
                                     const row: Record<string, string> = {};
                                     if (lineId) row['LINE_ID'] = lineId;
                                     if (authorityName) row['AUTHORITY_NAME'] = authorityName;
@@ -130,30 +155,31 @@ export function extractValuesByPath(xml: string, path: string[], fields?: string
                                         row[field] = getChildValueByPath(el, field);
                                     });
 
-                                    // Extract nested fields relative to the repeating child
+                                    // Extract nested fields relative to the repeating element
                                     nestedFields.forEach(field => {
                                         const parts = field.split('/');
-                                        if (checkTagMatch(parts[0], primaryPrefix)) {
-                                            // Strip the prefix and search within this repeating child
-                                            const subPath = parts.slice(1).join('/');
-                                            if (subPath) {
-                                                row[field] = getChildValueByPath(repeatingChild, subPath);
-                                            } else {
-                                                // Field IS the repeating element itself
-                                                row[field] = repeatingChild.children.length === 0
-                                                    ? (repeatingChild.textContent || '')
-                                                    : '';
-                                            }
+                                        const remainingPath = parts.slice(consumedSegments).join('/');
+                                        if (remainingPath) {
+                                            row[field] = getChildValueByPath(repeatingEl, remainingPath);
                                         } else {
-                                            // Different prefix - extract from parent
-                                            row[field] = getChildValueByPath(el, field);
+                                            // Field path matches the repeating element itself
+                                            row[field] = repeatingEl.children.length === 0
+                                                ? (repeatingEl.textContent || '')
+                                                : '';
                                         }
                                     });
 
                                     results.push(row);
                                 });
+                            } else if (currentElements.length > 0) {
+                                // No repeating level found, but we walked to some elements
+                                // Fall back to single row
+                                fields.forEach(field => {
+                                    rowData[field] = getChildValueByPath(el, field);
+                                });
+                                results.push(rowData);
                             } else {
-                                // No repeating children found, fall back to single row
+                                // No matching children at all, single row
                                 fields.forEach(field => {
                                     rowData[field] = getChildValueByPath(el, field);
                                 });
