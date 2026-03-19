@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# XML Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based XML viewer and data extraction tool built with React and TypeScript. Upload XML files or ZIP archives, search across all files, and extract structured data into tables with a right-click.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### File Management
+- Upload individual `.xml` files or `.zip` archives containing XML/CSV/HTML files
+- XML files are automatically pretty-printed with 2-space indentation
+- Manage multiple files in the sidebar with easy selection and removal
 
-## React Compiler
+### Cross-File Search
+- Search across all loaded XML files from the right sidebar
+- Results display parent context (tag hierarchy) for each match
+- Click any result to navigate directly to the matching location in the file, with the match highlighted
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Data Extraction
 
-## Expanding the ESLint configuration
+#### Extract All
+Right-click any XML tag and select **Extract All** to extract every instance of that tag into a table. The table displays all child elements as columns, with one row per occurrence.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+#### Extract Fields
+Right-click any XML tag and select **Extract Fields...** to open a field selector that lists all descendant tags. Pick the specific fields you need, and the tool builds a table with only those columns.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Supports fields at mixed nesting depths (e.g., `LINE/LINE_NUMBER` alongside `LINE/TAX/VENDOR_TAX/AMOUNT`)
+- Automatically detects repeating elements and creates one row per instance
+- Includes `LINE_ID` and `AUTHORITY_NAME` context columns when available
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+#### Presets
+Save frequently used field selections as named presets. Presets are stored in the browser (localStorage) and persist across sessions.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Copy to Excel
+Extraction results can be copied to the clipboard in a tab-separated format, ready to paste into Excel or any spreadsheet application.
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+
+### Install and Run
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will be available at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Build for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
+## Tech Stack
+
+- **React 19** with TypeScript
+- **Vite** for bundling and dev server
+- **JSZip** for ZIP archive extraction
+- **Lucide React** for icons
+- **Tailwind CSS** for styling
