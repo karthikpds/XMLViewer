@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { X, Plus, Check, Save, FolderOpen, Trash2 } from 'lucide-react';
+import { X, Check, Save, FolderOpen, Trash2, Search, Plus } from 'lucide-react';
 
 interface FieldSelectionModalProps {
     isOpen: boolean;
@@ -32,17 +32,18 @@ function savePresetsToStorage(presets: SavedPreset[]) {
 
 export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields }: FieldSelectionModalProps) {
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState('');
+    const [filterValue, setFilterValue] = useState('');
+    const [customInput, setCustomInput] = useState('');
     const [presets, setPresets] = useState<SavedPreset[]>([]);
     const [showSaveInput, setShowSaveInput] = useState(false);
     const [presetName, setPresetName] = useState('');
     const [showPresets, setShowPresets] = useState(false);
 
-    // Load presets + reset state when modal opens
     useEffect(() => {
         if (isOpen) {
             setSelectedFields([]);
-            setInputValue('');
+            setFilterValue('');
+            setCustomInput('');
             setPresets(loadPresets());
             setShowSaveInput(false);
             setPresetName('');
@@ -51,36 +52,49 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
 
     if (!isOpen) return null;
 
-    const handleAddField = (field: string) => {
-        if (field && !selectedFields.includes(field)) {
-            setSelectedFields([...selectedFields, field]);
-        }
-        setInputValue('');
-    };
-
-    const handleRemoveField = (field: string) => {
-        setSelectedFields(selectedFields.filter(f => f !== field));
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleAddField(inputValue);
-        }
-    };
-
-    const filteredAvailable = availableFields.filter(f =>
-        f.toLowerCase().includes(inputValue.toLowerCase()) && !selectedFields.includes(f)
+    const filteredFields = availableFields.filter(f =>
+        f.toLowerCase().includes(filterValue.toLowerCase())
     );
 
-    const handleExtract = () => {
-        let fieldsToExtract = [...selectedFields];
-        if (inputValue && !fieldsToExtract.includes(inputValue)) {
-            fieldsToExtract.push(inputValue);
-        }
+    const toggleField = (field: string) => {
+        setSelectedFields(prev =>
+            prev.includes(field)
+                ? prev.filter(f => f !== field)
+                : [...prev, field]
+        );
+    };
 
-        if (fieldsToExtract.length > 0) {
-            onSubmit(fieldsToExtract);
+    const handleSelectAll = () => {
+        setSelectedFields(prev => {
+            const newSelected = new Set(prev);
+            filteredFields.forEach(f => newSelected.add(f));
+            return Array.from(newSelected);
+        });
+    };
+
+    const handleDeselectAll = () => {
+        const filteredSet = new Set(filteredFields);
+        setSelectedFields(prev => prev.filter(f => !filteredSet.has(f)));
+    };
+
+    const handleAddCustom = () => {
+        const val = customInput.trim();
+        if (val && !selectedFields.includes(val)) {
+            setSelectedFields(prev => [...prev, val]);
+        }
+        setCustomInput('');
+    };
+
+    const handleCustomKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddCustom();
+        }
+    };
+
+    const handleExtract = () => {
+        if (selectedFields.length > 0) {
+            onSubmit(selectedFields);
         }
     };
 
@@ -121,6 +135,11 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
         }
     };
 
+    // Custom fields that aren't in the available list
+    const customFields = selectedFields.filter(f => !availableFields.includes(f));
+
+    const allFilteredSelected = filteredFields.length > 0 && filteredFields.every(f => selectedFields.includes(f));
+
     return (
         <div style={{
             position: 'fixed',
@@ -157,9 +176,23 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                     padding: '1rem',
                     borderBottom: '1px solid var(--border-color)'
                 }}>
-                    <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
-                        Select Fields to Extract
-                    </h2>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                            Select Fields to Extract
+                        </h2>
+                        {selectedFields.length > 0 && (
+                            <span style={{
+                                fontSize: '0.75rem',
+                                fontWeight: 600,
+                                backgroundColor: 'var(--accent-color)',
+                                color: 'white',
+                                padding: '2px 8px',
+                                borderRadius: '9999px'
+                            }}>
+                                {selectedFields.length} selected
+                            </span>
+                        )}
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         {/* Load Preset Button */}
                         {presets.length > 0 && (
@@ -282,168 +315,313 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
 
                 {/* Body - scrollable */}
                 <div style={{
-                    padding: '1.5rem',
+                    padding: '1rem 1.5rem',
                     overflowY: 'auto',
-                    minHeight: 0
+                    minHeight: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem'
                 }}>
 
-                    {/* Input */}
-                    <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '0.75rem',
-                            fontWeight: 500,
-                            color: 'var(--text-secondary)',
-                            marginBottom: '0.5rem',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em'
+                    {/* Search/Filter Input */}
+                    <div style={{ position: 'relative' }}>
+                        <Search style={{
+                            position: 'absolute',
+                            left: '12px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '16px',
+                            height: '16px',
+                            color: 'var(--text-secondary)'
+                        }} />
+                        <input
+                            type="text"
+                            value={filterValue}
+                            onChange={(e) => setFilterValue(e.target.value)}
+                            placeholder="Search fields..."
+                            style={{
+                                width: '100%',
+                                backgroundColor: 'var(--bg-color)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '8px',
+                                padding: '0.5rem 1rem 0.5rem 2.25rem',
+                                fontSize: '0.875rem',
+                                color: 'var(--text-primary)',
+                                outline: 'none',
+                                boxSizing: 'border-box'
+                            }}
+                            autoFocus
+                        />
+                    </div>
+
+                    {/* Selected Fields Pills */}
+                    {selectedFields.length > 0 && (
+                        <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.375rem',
+                            padding: '0.5rem 0.75rem',
+                            backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                            border: '1px solid rgba(56, 189, 248, 0.15)',
+                            borderRadius: '8px',
+                            maxHeight: '5.5rem',
+                            overflowY: 'auto'
                         }}>
-                            Add Field or XPath
-                        </label>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            {selectedFields.map(field => (
+                                <span key={field} style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                                    color: 'var(--accent-color)',
+                                    border: '1px solid rgba(56, 189, 248, 0.2)',
+                                    padding: '0.125rem 0.5rem',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.75rem',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    {field}
+                                    <button onClick={() => toggleField(field)} style={{
+                                        cursor: 'pointer',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: 'inherit',
+                                        padding: 0,
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <X style={{ width: '10px', height: '10px' }} />
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Select All / Deselect All + Save Preset */}
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        fontSize: '0.75rem',
+                        color: 'var(--text-secondary)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <span style={{ fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                Available Fields ({filteredFields.length})
+                            </span>
+                            <button
+                                onClick={handleSelectAll}
+                                disabled={allFilteredSelected}
+                                style={{
+                                    color: allFilteredSelected ? 'var(--text-secondary)' : 'var(--accent-color)',
+                                    cursor: allFilteredSelected ? 'default' : 'pointer',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 500,
+                                    opacity: allFilteredSelected ? 0.5 : 1
+                                }}
+                            >
+                                Select All
+                            </button>
+                            <button
+                                onClick={handleDeselectAll}
+                                style={{
+                                    color: 'var(--accent-color)',
+                                    cursor: 'pointer',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 500
+                                }}
+                            >
+                                Deselect All
+                            </button>
+                            {selectedFields.length > 0 && (
+                                <button
+                                    onClick={() => setSelectedFields([])}
+                                    style={{
+                                        color: '#ef4444',
+                                        cursor: 'pointer',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    Clear All
+                                </button>
+                            )}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            {selectedFields.length > 0 && !showSaveInput && (
+                                <button
+                                    onClick={() => setShowSaveInput(true)}
+                                    style={{
+                                        color: 'var(--accent-color)',
+                                        fontSize: '0.75rem',
+                                        cursor: 'pointer',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    <Save style={{ width: '12px', height: '12px' }} />
+                                    Save Preset
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Save Preset Input */}
+                    {showSaveInput && (
+                        <div style={{
+                            display: 'flex',
+                            gap: '0.5rem',
+                            padding: '0.5rem',
+                            backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                            border: '1px solid rgba(56, 189, 248, 0.15)',
+                            borderRadius: '8px'
+                        }}>
                             <input
                                 type="text"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                placeholder="e.g. ID, INVOICE/DATE..."
+                                value={presetName}
+                                onChange={(e) => setPresetName(e.target.value)}
+                                onKeyDown={handleSaveKeyDown}
+                                placeholder="Enter preset name..."
                                 style={{
                                     flex: 1,
                                     backgroundColor: 'var(--bg-color)',
                                     border: '1px solid var(--border-color)',
-                                    borderRadius: '8px',
-                                    padding: '0.5rem 1rem',
-                                    fontSize: '0.875rem',
+                                    borderRadius: '6px',
+                                    padding: '0.375rem 0.75rem',
+                                    fontSize: '0.8rem',
                                     color: 'var(--text-primary)',
                                     outline: 'none'
                                 }}
                                 autoFocus
                             />
                             <button
-                                onClick={() => handleAddField(inputValue)}
-                                disabled={!inputValue}
+                                onClick={handleSavePreset}
+                                disabled={!presetName.trim()}
                                 style={{
-                                    backgroundColor: 'var(--bg-color)',
-                                    border: '1px solid var(--border-color)',
-                                    color: 'var(--text-primary)',
-                                    padding: '0.5rem 0.75rem',
-                                    borderRadius: '8px',
-                                    cursor: inputValue ? 'pointer' : 'default',
-                                    opacity: inputValue ? 1 : 0.5
+                                    backgroundColor: 'var(--accent-color)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '0.375rem 0.75rem',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 500,
+                                    cursor: presetName.trim() ? 'pointer' : 'default',
+                                    opacity: presetName.trim() ? 1 : 0.5
                                 }}
                             >
-                                <Plus className="w-5 h-5" />
+                                Save
+                            </button>
+                            <button
+                                onClick={() => { setShowSaveInput(false); setPresetName(''); }}
+                                style={{
+                                    color: 'var(--text-secondary)',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    padding: '0.375rem'
+                                }}
+                            >
+                                <X style={{ width: '14px', height: '14px' }} />
                             </button>
                         </div>
-                    </div>
+                    )}
 
-                    {/* Selected Fields */}
-                    {selectedFields.length > 0 && (
-                        <div style={{ marginBottom: '1.5rem' }}>
+                    {/* Checkbox List */}
+                    {availableFields.length === 0 ? (
+                        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
+                            No child tags found.
+                        </p>
+                    ) : (
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '4px'
+                        }}>
+                            {filteredFields.map(field => {
+                                const isChecked = selectedFields.includes(field);
+                                return (
+                                    <label
+                                        key={field}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                            padding: '0.4rem 0.75rem',
+                                            borderRadius: '6px',
+                                            cursor: 'pointer',
+                                            backgroundColor: isChecked ? 'rgba(56, 189, 248, 0.08)' : 'transparent',
+                                            border: '1px solid',
+                                            borderColor: isChecked ? 'rgba(56, 189, 248, 0.2)' : 'transparent',
+                                            transition: 'all 0.15s',
+                                            userSelect: 'none'
+                                        }}
+                                        onMouseEnter={e => {
+                                            if (!isChecked) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
+                                        }}
+                                        onMouseLeave={e => {
+                                            if (!isChecked) e.currentTarget.style.backgroundColor = 'transparent';
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: '18px',
+                                            height: '18px',
+                                            borderRadius: '4px',
+                                            border: isChecked ? '2px solid var(--accent-color)' : '2px solid var(--text-secondary)',
+                                            backgroundColor: isChecked ? 'var(--accent-color)' : 'transparent',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            flexShrink: 0,
+                                            transition: 'all 0.15s'
+                                        }}>
+                                            {isChecked && <Check style={{ width: '12px', height: '12px', color: 'white' }} />}
+                                        </div>
+                                        <span style={{
+                                            fontSize: '0.85rem',
+                                            color: isChecked ? 'var(--accent-color)' : 'var(--text-primary)',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }} title={field}>
+                                            {field}
+                                        </span>
+                                        <input
+                                            type="checkbox"
+                                            checked={isChecked}
+                                            onChange={() => toggleField(field)}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </label>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {/* Custom fields (not in available list) */}
+                    {customFields.length > 0 && (
+                        <div>
                             <div style={{
                                 fontSize: '0.75rem',
                                 fontWeight: 500,
                                 color: 'var(--text-secondary)',
-                                marginBottom: '0.5rem',
+                                marginBottom: '0.375rem',
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.05em',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
+                                letterSpacing: '0.05em'
                             }}>
-                                <span>Selected ({selectedFields.length})</span>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                                    {/* Save as Preset button */}
-                                    <button
-                                        onClick={() => setShowSaveInput(!showSaveInput)}
-                                        style={{
-                                            color: 'var(--accent-color)',
-                                            fontSize: '0.75rem',
-                                            cursor: 'pointer',
-                                            background: 'transparent',
-                                            border: 'none',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '4px'
-                                        }}
-                                    >
-                                        <Save style={{ width: '12px', height: '12px' }} />
-                                        Save Preset
-                                    </button>
-                                    <button onClick={() => setSelectedFields([])} style={{
-                                        color: 'var(--accent-color)',
-                                        fontSize: '0.75rem',
-                                        cursor: 'pointer',
-                                        background: 'transparent',
-                                        border: 'none',
-                                        textDecoration: 'underline'
-                                    }}>Clear All</button>
-                                </div>
+                                Custom Fields
                             </div>
-
-                            {/* Save Preset Input */}
-                            {showSaveInput && (
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '0.5rem',
-                                    marginBottom: '0.75rem',
-                                    padding: '0.5rem',
-                                    backgroundColor: 'rgba(56, 189, 248, 0.05)',
-                                    border: '1px solid rgba(56, 189, 248, 0.15)',
-                                    borderRadius: '8px'
-                                }}>
-                                    <input
-                                        type="text"
-                                        value={presetName}
-                                        onChange={(e) => setPresetName(e.target.value)}
-                                        onKeyDown={handleSaveKeyDown}
-                                        placeholder="Enter preset name..."
-                                        style={{
-                                            flex: 1,
-                                            backgroundColor: 'var(--bg-color)',
-                                            border: '1px solid var(--border-color)',
-                                            borderRadius: '6px',
-                                            padding: '0.375rem 0.75rem',
-                                            fontSize: '0.8rem',
-                                            color: 'var(--text-primary)',
-                                            outline: 'none'
-                                        }}
-                                        autoFocus
-                                    />
-                                    <button
-                                        onClick={handleSavePreset}
-                                        disabled={!presetName.trim()}
-                                        style={{
-                                            backgroundColor: 'var(--accent-color)',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '6px',
-                                            padding: '0.375rem 0.75rem',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 500,
-                                            cursor: presetName.trim() ? 'pointer' : 'default',
-                                            opacity: presetName.trim() ? 1 : 0.5
-                                        }}
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        onClick={() => { setShowSaveInput(false); setPresetName(''); }}
-                                        style={{
-                                            color: 'var(--text-secondary)',
-                                            background: 'transparent',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            padding: '0.375rem'
-                                        }}
-                                    >
-                                        <X style={{ width: '14px', height: '14px' }} />
-                                    </button>
-                                </div>
-                            )}
-
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {selectedFields.map(field => (
+                                {customFields.map(field => (
                                     <span key={field} style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
@@ -453,10 +631,10 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                                         border: '1px solid rgba(56, 189, 248, 0.2)',
                                         padding: '0.25rem 0.625rem',
                                         borderRadius: '9999px',
-                                        fontSize: '0.875rem'
+                                        fontSize: '0.85rem'
                                     }}>
                                         {field}
-                                        <button onClick={() => handleRemoveField(field)} style={{
+                                        <button onClick={() => setSelectedFields(prev => prev.filter(f => f !== field))} style={{
                                             cursor: 'pointer',
                                             background: 'transparent',
                                             border: 'none',
@@ -471,60 +649,49 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                         </div>
                     )}
 
-                    {/* Available Fields */}
-                    <div>
-                        <div style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 500,
-                            color: 'var(--text-secondary)',
-                            marginBottom: '0.5rem',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em'
-                        }}>
-                            Available Fields ({filteredAvailable.length})
-                        </div>
-                        {availableFields.length === 0 ? (
-                            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
-                                No child tags found.
-                            </p>
-                        ) : (
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr 1fr',
-                                gap: '0.5rem'
-                            }}>
-                                {filteredAvailable.map(field => (
-                                    <button
-                                        key={field}
-                                        onClick={() => handleAddField(field)}
-                                        style={{
-                                            textAlign: 'left',
-                                            padding: '0.5rem 0.75rem',
-                                            borderRadius: '8px',
-                                            backgroundColor: 'var(--bg-color)',
-                                            border: '1px solid var(--border-color)',
-                                            fontSize: '0.875rem',
-                                            color: 'var(--text-primary)',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between'
-                                        }}
-                                    >
-                                        <span style={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap'
-                                        }} title={field}>{field}</span>
-                                        <Plus style={{ width: '16px', height: '16px', color: 'var(--text-secondary)', flexShrink: 0 }} />
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    {/* Add Custom Field */}
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input
+                            type="text"
+                            value={customInput}
+                            onChange={(e) => setCustomInput(e.target.value)}
+                            onKeyDown={handleCustomKeyDown}
+                            placeholder="Add custom field path..."
+                            style={{
+                                flex: 1,
+                                backgroundColor: 'var(--bg-color)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '8px',
+                                padding: '0.4rem 0.75rem',
+                                fontSize: '0.8rem',
+                                color: 'var(--text-primary)',
+                                outline: 'none'
+                            }}
+                        />
+                        <button
+                            onClick={handleAddCustom}
+                            disabled={!customInput.trim()}
+                            style={{
+                                backgroundColor: 'var(--bg-color)',
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-primary)',
+                                padding: '0.4rem 0.6rem',
+                                borderRadius: '8px',
+                                cursor: customInput.trim() ? 'pointer' : 'default',
+                                opacity: customInput.trim() ? 1 : 0.5,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                fontSize: '0.8rem'
+                            }}
+                        >
+                            <Plus style={{ width: '14px', height: '14px' }} />
+                            Add
+                        </button>
                     </div>
                 </div>
 
-                {/* Footer - always visible */}
+                {/* Footer */}
                 <div style={{
                     padding: '1rem',
                     borderTop: '1px solid var(--border-color)',
@@ -549,16 +716,16 @@ export function FieldSelectionModal({ isOpen, onClose, onSubmit, availableFields
                     </button>
                     <button
                         onClick={handleExtract}
-                        disabled={selectedFields.length === 0 && !inputValue}
+                        disabled={selectedFields.length === 0}
                         style={{
                             padding: '0.5rem 1.5rem',
-                            backgroundColor: (selectedFields.length === 0 && !inputValue) ? 'rgba(56, 189, 248, 0.5)' : 'var(--accent-color)',
+                            backgroundColor: selectedFields.length === 0 ? 'rgba(56, 189, 248, 0.5)' : 'var(--accent-color)',
                             color: 'white',
                             fontSize: '0.875rem',
                             fontWeight: 500,
                             borderRadius: '8px',
                             border: 'none',
-                            cursor: (selectedFields.length === 0 && !inputValue) ? 'not-allowed' : 'pointer',
+                            cursor: selectedFields.length === 0 ? 'not-allowed' : 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5rem',
